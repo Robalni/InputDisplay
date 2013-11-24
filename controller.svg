@@ -17,7 +17,6 @@
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
    sodipodi:docname="controller.svg"
-   enable-background="new"
    inkscape:export-filename="/home/robert/Bilder/controller/z.png"
    inkscape:export-xdpi="135"
    inkscape:export-ydpi="135">
@@ -46,7 +45,6 @@
          id="stop5409" />
     </linearGradient>
     <linearGradient
-       inkscape:collect="always"
        id="linearGradient3921"
        osb:paint="gradient">
       <stop
@@ -57,28 +55,6 @@
          style="stop-color:#000000;stop-opacity:0;"
          offset="1"
          id="stop3925" />
-    </linearGradient>
-    <radialGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient5405-1"
-       id="radialGradient5413-9"
-       cx="60.947273"
-       cy="90.475555"
-       fx="60.947273"
-       fy="90.475555"
-       r="97.633514"
-       gradientTransform="matrix(0.87135931,0.94058741,-1.8006414,1.6681126,235.07545,-172.78336)"
-       gradientUnits="userSpaceOnUse" />
-    <linearGradient
-       id="linearGradient5405-1">
-      <stop
-         style="stop-color:#181818;stop-opacity:1;"
-         offset="0"
-         id="stop5407-5" />
-      <stop
-         style="stop-color:#000000;stop-opacity:1;"
-         offset="1"
-         id="stop5409-8" />
     </linearGradient>
     <linearGradient
        inkscape:collect="always"
@@ -113,7 +89,7 @@
      inkscape:cx="69.572648"
      inkscape:cy="95.9622"
      inkscape:document-units="px"
-     inkscape:current-layer="layer6"
+     inkscape:current-layer="layer2"
      showgrid="false"
      inkscape:window-width="1600"
      inkscape:window-height="851"
@@ -137,16 +113,7 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-852.36218)"
-     style="display:none">
-    <image
-       y="855.55701"
-       x="-1.2626907"
-       id="image3082"
-       xlink:href="file:///media/Windows/Users/Robert_2/InputDisplay/controller.bmp"
-       height="194.80519"
-       width="200"
-       mask="none" />
-  </g>
+     style="display:inline" />
   <g
      inkscape:groupmode="layer"
      id="layer2"
