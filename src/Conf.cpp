@@ -23,7 +23,7 @@ bool Conf::readfile()
         continue;
       }
       if (line[line.size() - 1] < 32) {
-	line.resize(line.size() - 1);
+        line.resize(line.size() - 1);
       }
       size_t found_eq = line.find('=');
       if (found_eq != string::npos) {
