@@ -22,6 +22,9 @@ bool Conf::readfile()
       if (line[0] == '#') {
         continue;
       }
+      if (line[line.size() - 1] < 32) {
+	line.resize(line.size() - 1);
+      }
       size_t found_eq = line.find('=');
       if (found_eq != string::npos) {
         key = line.substr(0, found_eq);
