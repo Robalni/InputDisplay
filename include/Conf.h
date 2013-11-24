@@ -10,7 +10,7 @@ using namespace std;
 class Conf
 {
   public:
-    Conf(char *fname);
+    Conf(string fname);
     virtual ~Conf();
     bool readfile();
     string get_value(string key);

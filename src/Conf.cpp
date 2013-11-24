@@ -1,6 +1,6 @@
 #include "Conf.h"
 
-Conf::Conf(char *fname)
+Conf::Conf(string fname)
 {
   this->fname = fname;
   this->readfile();
