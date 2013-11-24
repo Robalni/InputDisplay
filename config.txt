@@ -1,0 +1,37 @@
+# Config file!
+# Lines that start with # are ignored by the program.
+# You can press r in the program to reload this file.
+
+width = 300
+height = 300
+fps = 60
+
+# Button mapping below:
+
+button0 = a
+button1 = start
+button2 = b
+button3 = c-up
+button4 = z
+button5 = r
+
+hat0u = d-up
+hat0r = d-right
+hat0d = d-down
+hat0l = d-left
+
+axis2t = 16384
+axis2 = l
+axis2- = c-right
+
+axis3t = 16384
+axis3 = c-down
+axis3- = c-up
+
+axis4t = 16384
+axis4 = c-right
+axis4- = c-left
+
+stickmax = 65536
+stickx = 0
+sticky = 1
