@@ -8,6 +8,7 @@ fps = 60
 
 # Button mapping below:
 
+# buttonX means the Xth button on the controller.
 button0 = a
 button1 = start
 button2 = b
@@ -15,11 +16,16 @@ button3 = c-up
 button4 = z
 button5 = r
 
+# hatX means the Xth hat on the controller.
+# u/r/d/l means up/right/down/left.
 hat0u = d-up
 hat0r = d-right
 hat0d = d-down
 hat0l = d-left
 
+# axisXt means means the treshold for the Xth axis (how far you have to press it).
+# axisX means what happens when you press it in the positive direction.
+# axisX- means what happens when you press it in the negative direction.
 axis2t = 16384
 axis2 = l
 axis2- = c-right
@@ -32,6 +38,9 @@ axis4t = 16384
 axis4 = c-right
 axis4- = c-left
 
+# stickmax is the maximum input value for the stick.
+# stickx is the axis for horizontal movement.
+# sticky is the axis for vertical movement.
 stickmax = 65536
 stickx = 0
 sticky = 1
