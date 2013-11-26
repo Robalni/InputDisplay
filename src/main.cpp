@@ -134,7 +134,7 @@ int main(int argc, char* argv[])
   buttonmap["d-down"] = btn_ddown;
   buttonmap["d-left"] = btn_dleft;
   int treshold;
-  int stickmax = 65536;
+  int stickmax = 32767;
   int stickx = 0;
   int sticky = 1;
   if (conf.get_value("stickmax") != "") {
