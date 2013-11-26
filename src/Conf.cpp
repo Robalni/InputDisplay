@@ -22,7 +22,7 @@ bool Conf::readfile()
       if (line[0] == '#') {
         continue;
       }
-      if (line[line.size() - 1] < 32) {
+      if (line.size() > 0 && line[line.size() - 1] < 32) {
         line.resize(line.size() - 1);
       }
       size_t found_eq = line.find('=');

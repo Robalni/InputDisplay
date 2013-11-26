@@ -200,7 +200,8 @@ int main(int argc, char* argv[])
       if (conf.get_value(key2) != "") {
         treshold = atoi(conf.get_value(key2).c_str());
       }
-      if (buttonmap[value] != 0 && SDL_JoystickGetAxis(controller, i) > treshold) {
+      if (buttonmap[value] != 0
+          && SDL_JoystickGetAxis(controller, i) > treshold) {
         SDL_BlitSurface(buttonmap[value], NULL, screen, NULL);
       }
     }
@@ -211,31 +212,36 @@ int main(int argc, char* argv[])
       if (conf.get_value(key2) != "") {
         treshold = atoi(conf.get_value(key2).c_str());
       }
-      if (buttonmap[value] != 0 && SDL_JoystickGetAxis(controller, i) < -treshold) {
+      if (buttonmap[value] != 0
+          && SDL_JoystickGetAxis(controller, i) < -treshold) {
         SDL_BlitSurface(buttonmap[value], NULL, screen, NULL);
       }
     }
     for (i = 0, key = "hat0u";
          (value = conf.get_value(key)) != ""; i++, key[3]++) {
-      if (buttonmap[value] != 0 && SDL_JoystickGetHat(controller, i) & SDL_HAT_UP) {
+      if (buttonmap[value] != 0 && SDL_JoystickGetHat(controller, i) 
+          & SDL_HAT_UP) {
         SDL_BlitSurface(buttonmap[value], NULL, screen, NULL);
       }
     }
     for (i = 0, key = "hat0r";
          (value = conf.get_value(key)) != ""; i++, key[3]++) {
-      if (buttonmap[value] != 0 && SDL_JoystickGetHat(controller, i) & SDL_HAT_RIGHT) {
+      if (buttonmap[value] != 0 && SDL_JoystickGetHat(controller, i) 
+          & SDL_HAT_RIGHT) {
         SDL_BlitSurface(buttonmap[value], NULL, screen, NULL);
       }
     }
     for (i = 0, key = "hat0d";
          (value = conf.get_value(key)) != ""; i++, key[3]++) {
-      if (buttonmap[value] != 0 && SDL_JoystickGetHat(controller, i) & SDL_HAT_DOWN) {
+      if (buttonmap[value] != 0 && SDL_JoystickGetHat(controller, i) 
+          & SDL_HAT_DOWN) {
         SDL_BlitSurface(buttonmap[value], NULL, screen, NULL);
       }
     }
     for (i = 0, key = "hat0l";
          (value = conf.get_value(key)) != ""; i++, key[3]++) {
-      if (buttonmap[value] != 0 && SDL_JoystickGetHat(controller, i) & SDL_HAT_LEFT) {
+      if (buttonmap[value] != 0 && SDL_JoystickGetHat(controller, i) 
+          & SDL_HAT_LEFT) {
         SDL_BlitSurface(buttonmap[value], NULL, screen, NULL);
       }
     }
