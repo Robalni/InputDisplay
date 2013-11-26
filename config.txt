@@ -41,6 +41,6 @@ axis4- = c-left
 # stickmax is the maximum input value for the stick.
 # stickx is the axis for horizontal movement.
 # sticky is the axis for vertical movement.
-stickmax = 65536
+stickmax = 32768
 stickx = 0
 sticky = 1
