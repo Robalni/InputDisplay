@@ -1,9 +1,15 @@
 #include "Conf.h"
 
+#include <iostream>
+#include <cstdlib>
+
 Conf::Conf(string fname)
 {
   this->fname = fname;
-  this->readfile();
+  if (!this->readfile()) {
+    cerr << "Failed to open " << this->fname << endl;
+    exit(1);
+  }
 }
 
 Conf::~Conf()
