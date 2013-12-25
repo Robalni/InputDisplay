@@ -67,7 +67,7 @@ bool read_and_write(std::vector<std::string>& filecontent)
   SDL_Flip(screen);
 
   while (!got_input) {
-    while (SDL_PollEvent(&event)) {
+    while (SDL_PollEvent(&event) && !got_input) {
       ss.clear();
       switch (event.type) {
       case SDL_JOYBUTTONDOWN:
@@ -156,7 +156,7 @@ bool read_and_write(std::vector<std::string>& filecontent)
     "c-up", "l", "d-left"
   };
 
-  cout << selected << " = " << button_names[selected] << endl;
+  //cout << selected << " = " << button_names[selected] << endl;
 
   update_config(filecontent, pressed, button_names[selected]);
 
