@@ -217,7 +217,7 @@ int disp_str(std::string str, SDL_Surface* surf, int x, int y)
       pos.x = x;
       pos.y += 20;
     } else {
-      SDL_BlitSurface(ascii, &cut, screen, &pos);
+      SDL_BlitSurface(ascii, &cut, surf, &pos);
       pos.x += 10;
     }
   }
