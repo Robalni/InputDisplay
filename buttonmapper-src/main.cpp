@@ -34,6 +34,9 @@ int main(int argc, char* argv[])
   string line;
   while (file.good()) {
     getline(file, line);
+    if (file.eof()) {
+      break;
+    }
     filecontent.push_back(line);
   }
   file.close();
