@@ -3,6 +3,9 @@
 #include <cstdlib>
 #include <map>
 #include <string>
+#include <sstream>
+
+int disp_str(std::string str, SDL_Surface* surf, int x, int y);
 
 int main(int argc, char* argv[])
 {
@@ -155,6 +158,10 @@ int main(int argc, char* argv[])
   bool running = true;
   bool reload = false;
   bool mash = false;
+  int mashcounter = 0;
+  int framecounter = 0;
+  stringstream mashss;
+  mashss.str("0");
   while (running) {
     if (reload) {
       conf.reload();
@@ -184,6 +191,8 @@ int main(int argc, char* argv[])
         } else if (event.key.keysym.sym == SDLK_m) {
           mash = !mash;
         }
+      } else if (event.type == SDL_JOYBUTTONDOWN) {
+        mashcounter++;
       }
     }
 
@@ -250,8 +259,19 @@ int main(int argc, char* argv[])
     stick_pos.y = SDL_JoystickGetAxis(controller, sticky) * 12 / stickmax;
     SDL_BlitSurface(stick, NULL, screen, &stick_pos);
 
+    if (mash) {
+      if (framecounter % fps == 0) {
+        mashss.str("");
+        mashss << mashcounter;
+        mashcounter = 0;
+      }
+      disp_str(mashss.str(), screen,
+               width-10-mashss.str().length()*10, height-20);
+    }
+
     SDL_Flip(screen);
     SDL_Delay(1000 / fps);
+    framecounter++;
   }
 
   SDL_FreeSurface(background);
@@ -285,4 +305,33 @@ int main(int argc, char* argv[])
   SDL_Quit();
 
   return 0;
+}
+
+
+int disp_str(std::string str, SDL_Surface* surf, int x, int y)
+{
+  static SDL_Surface* ascii = SDL_LoadBMP("ascii.bmp");
+  SDL_Rect cut;
+  SDL_Rect pos;
+  cut.w = 10;
+  cut.h = 20;
+  pos.w = 10;
+  pos.h = 20;
+  pos.x = x;
+  pos.y = y;
+  int i;
+
+  for (i = 0; i < str.size(); i++) {
+    cut.x = str[i] % 32 * 10;
+    cut.y = str[i] / 32 * 20;
+    if (str[i] == '\n') {
+      pos.x = x;
+      pos.y += 20;
+    } else {
+      SDL_BlitSurface(ascii, &cut, surf, &pos);
+      pos.x += 10;
+    }
+  }
+
+  return i;
 }
