@@ -266,8 +266,8 @@ int main(int argc, char* argv[])
       }
     }
 
-    stick_pos.x = SDL_JoystickGetAxis(controller, stickx) * 12 / stickmax;
-    stick_pos.y = SDL_JoystickGetAxis(controller, sticky) * 12 / stickmax;
+    stick_pos.x = SDL_JoystickGetAxis(controller, stickx) * stickmax / 32767;
+    stick_pos.y = SDL_JoystickGetAxis(controller, sticky) * stickmax / 32767;
     SDL_BlitSurface(stick, NULL, screen, &stick_pos);
 
     if (mash) {

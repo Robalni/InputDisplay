@@ -40,9 +40,9 @@ axis4t = 16384
 axis4 = c-right
 axis4- = c-left
 
-# stickmax is the maximum input value for the stick.
+# stickmax is how far the stick will move assuming the maximum input value is 32767
 # stickx is the axis for horizontal movement.
 # sticky is the axis for vertical movement.
-stickmax = 32767
+stickmax = 12
 stickx = 0
 sticky = 1
