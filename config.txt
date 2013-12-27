@@ -2,8 +2,8 @@
 # Lines that start with # are ignored by the program.
 # You can press r in the program to reload this file.
 
-width = 300
-height = 300
+width = auto
+height = auto
 fps = 60
 
 # Button mapping below:

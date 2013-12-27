@@ -11,15 +11,6 @@ int main(int argc, char* argv[])
 {
   Conf conf("config.txt");
 
-  int width = 300;
-  int height = 300;
-  if (conf.get_value("width") != "") {
-    width = atoi(conf.get_value("width").c_str());
-  }
-  if (conf.get_value("height") != "") {
-    height = atoi(conf.get_value("height").c_str());
-  }
-
   SDL_Joystick *controller = NULL;
 
   SDL_Surface* screen = NULL;
@@ -55,12 +46,6 @@ int main(int argc, char* argv[])
   SDL_Surface* img_stick = NULL;
   SDL_Surface* stick = NULL;
 
-  SDL_Init(SDL_INIT_EVERYTHING);
-  SDL_WM_SetCaption("InputDisplay", NULL);
-  screen = SDL_SetVideoMode(width, height, 32, SDL_SWSURFACE);
-
-  controller = SDL_JoystickOpen(0);
-
   background = SDL_LoadBMP("controller.bmp");
   img_a = SDL_LoadBMP("a.bmp");
   img_b = SDL_LoadBMP("b.bmp");
@@ -77,6 +62,27 @@ int main(int argc, char* argv[])
   img_ddown = SDL_LoadBMP("ddown.bmp");
   img_dleft = SDL_LoadBMP("dleft.bmp");
   img_stick = SDL_LoadBMP("stick.bmp");
+
+  int width;
+  int height;
+  std::string const &widthstr = conf.get_value("width");
+  std::string const &heightstr = conf.get_value("height");
+  if (widthstr == "auto" || widthstr == "") {
+    width = background->w;
+  } else {
+    width = atoi(widthstr.c_str());
+  }
+  if (heightstr == "auto" || heightstr == "") {
+    height = background->h;
+  } else {
+    height = atoi(heightstr.c_str());
+  }
+
+  SDL_Init(SDL_INIT_EVERYTHING);
+  SDL_WM_SetCaption("InputDisplay", NULL);
+  screen = SDL_SetVideoMode(width, height, 32, SDL_SWSURFACE);
+
+  controller = SDL_JoystickOpen(0);
 
   btn_a = SDL_DisplayFormat(img_a);
   btn_b = SDL_DisplayFormat(img_b);
