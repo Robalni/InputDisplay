@@ -46,22 +46,27 @@ int main(int argc, char* argv[])
   SDL_Surface* img_stick = NULL;
   SDL_Surface* stick = NULL;
 
-  background = SDL_LoadBMP("controller.bmp");
-  img_a = SDL_LoadBMP("a.bmp");
-  img_b = SDL_LoadBMP("b.bmp");
-  img_start = SDL_LoadBMP("start.bmp");
-  img_cup = SDL_LoadBMP("cup.bmp");
-  img_cleft = SDL_LoadBMP("cleft.bmp");
-  img_cright = SDL_LoadBMP("cright.bmp");
-  img_cdown = SDL_LoadBMP("cdown.bmp");
-  img_r = SDL_LoadBMP("r.bmp");
-  img_l = SDL_LoadBMP("l.bmp");
-  img_z = SDL_LoadBMP("z.bmp");
-  img_dup = SDL_LoadBMP("dup.bmp");
-  img_dright = SDL_LoadBMP("dright.bmp");
-  img_ddown = SDL_LoadBMP("ddown.bmp");
-  img_dleft = SDL_LoadBMP("dleft.bmp");
-  img_stick = SDL_LoadBMP("stick.bmp");
+  std::string imgdir = conf.get_value("imgdir");
+  if (imgdir == "") {
+    imgdir = ".";
+  }
+
+  background = SDL_LoadBMP((imgdir+"/controller.bmp").c_str());
+  img_a = SDL_LoadBMP((imgdir+"/a.bmp").c_str());
+  img_b = SDL_LoadBMP((imgdir+"/b.bmp").c_str());
+  img_start = SDL_LoadBMP((imgdir+"/start.bmp").c_str());
+  img_cup = SDL_LoadBMP((imgdir+"/cup.bmp").c_str());
+  img_cleft = SDL_LoadBMP((imgdir+"/cleft.bmp").c_str());
+  img_cright = SDL_LoadBMP((imgdir+"/cright.bmp").c_str());
+  img_cdown = SDL_LoadBMP((imgdir+"/cdown.bmp").c_str());
+  img_r = SDL_LoadBMP((imgdir+"/r.bmp").c_str());
+  img_l = SDL_LoadBMP((imgdir+"/l.bmp").c_str());
+  img_z = SDL_LoadBMP((imgdir+"/z.bmp").c_str());
+  img_dup = SDL_LoadBMP((imgdir+"/dup.bmp").c_str());
+  img_dright = SDL_LoadBMP((imgdir+"/dright.bmp").c_str());
+  img_ddown = SDL_LoadBMP((imgdir+"/ddown.bmp").c_str());
+  img_dleft = SDL_LoadBMP((imgdir+"/dleft.bmp").c_str());
+  img_stick = SDL_LoadBMP((imgdir+"/stick.bmp").c_str());
 
   int width;
   int height;
@@ -316,7 +321,7 @@ int main(int argc, char* argv[])
 
 int disp_str(std::string str, SDL_Surface* surf, int x, int y)
 {
-  static SDL_Surface* ascii = SDL_LoadBMP("ascii.bmp");
+  static SDL_Surface* ascii = SDL_LoadBMP("img/ascii.bmp");
   SDL_Rect cut;
   SDL_Rect pos;
   cut.w = 10;

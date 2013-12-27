@@ -199,7 +199,7 @@ bool update_config(std::vector<std::string>& filecontent, std::string& pressed,
 
 int disp_str(std::string str, SDL_Surface* surf, int x, int y)
 {
-  static SDL_Surface* ascii = SDL_LoadBMP("ascii.bmp");
+  static SDL_Surface* ascii = SDL_LoadBMP("img/ascii.bmp");
   SDL_Rect cut;
   SDL_Rect pos;
   cut.w = 10;

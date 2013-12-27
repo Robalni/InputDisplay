@@ -6,6 +6,8 @@ width = auto
 height = auto
 fps = 60
 
+imgdir = img/default
+
 # Button mapping below:
 
 # buttonX means the Xth button on the controller.
