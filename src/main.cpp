@@ -52,7 +52,7 @@ int main()
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
   SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
 
-  Controller controller(conf.get_value("imgdir"), renderer);
+  Controller controller(conf.get_value("imgdir"), renderer, conf);
 
   int win_width, win_height;
   string win_width_str, win_height_str;
@@ -98,7 +98,7 @@ int main()
     }
 
     SDL_RenderClear(renderer);
-    controller.render(conf);
+    controller.render();
     SDL_RenderPresent(renderer);
     SDL_Delay(1000 / fps);
   }

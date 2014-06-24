@@ -38,19 +38,22 @@ using std::stringstream;
 class Controller
 {
 public:
-  Controller(string const &imgdir, SDL_Renderer *renderer);
+  Controller(string const &imgdir, SDL_Renderer *renderer, Conf &conf);
   ~Controller();
-  void render(Conf &conf);
+  void render();
   int get_width();
   int get_height();
 private:
   SDL_Surface *load_image(string const &name);
   SDL_Renderer *renderer;
-  map <string, SDL_Texture*> textures;
-  vector <int> used_buttons;
+  vector <SDL_Texture*> textures_buttons;
+  SDL_Texture *texture_controller;
+  SDL_Texture *texture_stick;
   string imgdir;
+  int stickx, sticky, stickmax;
   int width, height;
   SDL_Joystick *joystick;
+  int n_buttons, n_axes, n_hats;
 };
 
 #endif // CONTROLLER_HPP

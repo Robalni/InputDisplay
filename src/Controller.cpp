@@ -17,25 +17,55 @@
 
 #include "Controller.hpp"
 
-Controller::Controller(string const &imgdir, SDL_Renderer *renderer)
+Controller::Controller(string const &imgdir, SDL_Renderer *renderer,
+                       Conf &conf)
 {
+  this->stickx = conf.get_int("stickx");
+  this->sticky = conf.get_int("sticky");
+  this->stickmax = conf.get_int("stickmax");
+  this->imgdir = imgdir;
   this->renderer = renderer;
   this->joystick = SDL_JoystickOpen(0);
   if (this->joystick == NULL) {
     cerr << "Could not open joystick." << endl;
   }
-  this->imgdir = imgdir;
+
+  this->n_buttons = SDL_JoystickNumButtons(this->joystick);
+  this->n_hats = SDL_JoystickNumHats(this->joystick);
+  this->n_axes = SDL_JoystickNumAxes(this->joystick);
+
   SDL_Surface *surf;
   surf = load_image("controller");
   this->width = surf->w;
   this->height = surf->h;
-  this->textures["controller"]
+  this->texture_controller
     = SDL_CreateTextureFromSurface(this->renderer, surf);
   SDL_FreeSurface(surf);
+  surf = load_image("stick");
+  this->texture_stick = SDL_CreateTextureFromSurface(this->renderer, surf);
+  SDL_FreeSurface(surf);
+  for (int i = 0; i < this->n_buttons; i++) {
+    stringstream ss;
+    ss << "button" << i;
+    string name = conf.get_value(ss.str());
+    this->textures_buttons.push_back(NULL);
+    if (name == "")
+      continue;
+    surf = load_image(name.c_str());
+    this->textures_buttons[i] =
+      SDL_CreateTextureFromSurface(this->renderer, surf);
+    SDL_FreeSurface(surf);
+  }
 }
 
 Controller::~Controller()
 {
+  SDL_DestroyTexture(this->texture_controller);
+  SDL_DestroyTexture(this->texture_stick);
+  for (int i = 0; i < this->n_buttons; i++) {
+    if (this->textures_buttons[i] != NULL)
+      SDL_DestroyTexture(this->textures_buttons[i]);
+  }
   //SDL_JoystickClose(this->joystick);
 }
 
@@ -50,19 +80,23 @@ SDL_Surface *Controller::load_image(string const &name)
   return img;
 }
 
-void Controller::render(Conf &conf)
+void Controller::render()
 {
-  stringstream ss;
-  string name;
-  SDL_RenderCopy(this->renderer, this->textures["controller"], NULL, NULL);
-  for (size_t i = 0; i < this->used_buttons.size(); i++) {
-    if (SDL_JoystickGetButton(this->joystick, this->used_buttons[i])) {
-      ss << "button" << i;
-      name = ss.str();
-      SDL_RenderCopy(this->renderer, this->textures[conf.get_value(name)]
-                     , NULL, NULL);
+  int i;
+  SDL_RenderCopy(this->renderer, this->texture_controller, NULL, NULL);
+  for (i = 0; i < this->n_buttons; i++) {
+    if (SDL_JoystickGetButton(this->joystick, i)) {
+      SDL_RenderCopy(this->renderer, this->textures_buttons[i], NULL, NULL);
     }
   }
+  SDL_Rect rect;
+  rect.w = this->width;
+  rect.h = this->height;
+  rect.x = SDL_JoystickGetAxis(this->joystick, this->stickx)
+    * this->stickmax / 32767;
+  rect.y = SDL_JoystickGetAxis(this->joystick, this->sticky)
+    * this->stickmax / 32767;
+  SDL_RenderCopy(this->renderer, this->texture_stick, NULL, &rect);
 }
 
 int Controller::get_width()
