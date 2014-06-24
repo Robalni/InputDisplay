@@ -12,14 +12,12 @@ int disp_str(std::string str, SDL_Surface* surf, int x, int y);
 
 SDL_Surface* screen;
 
-int main(int argc, char* argv[])
+int main()
 {
   using namespace std;
   SDL_Joystick* controller = NULL;
   //SDL_Surface* screen = NULL;
-  SDL_Event event;
   vector<string> filecontent;
-  bool pressed = false;
   int width = 360, height = 200;
 
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
@@ -30,7 +28,7 @@ int main(int argc, char* argv[])
 
   fstream file;
   file.open("config.txt", ios::in);
-  int i = 0;
+  size_t i = 0;
   string line;
   while (file.good()) {
     getline(file, line);
@@ -51,6 +49,7 @@ int main(int argc, char* argv[])
   }
   file.close();
 
+  SDL_JoystickClose(controller);
   SDL_Quit();
 
   return 0;
@@ -178,7 +177,7 @@ bool update_config(std::vector<std::string>& filecontent, std::string& pressed,
   bool found_line = false;
   ss << pressed << " = " << disp_button;
   getline(ss, newline);
-  for (int i = 0; i < filecontent.size(); i++) {
+  for (size_t i = 0; i < filecontent.size(); i++) {
     string& line = filecontent[i];
     size_t beg = line.find_first_not_of("\t ");
     if (line.size() + 1 < pressed.size() || line.substr(beg, pressed.size())
@@ -208,7 +207,7 @@ int disp_str(std::string str, SDL_Surface* surf, int x, int y)
   pos.h = 20;
   pos.x = x;
   pos.y = y;
-  int i;
+  size_t i;
 
   for (i = 0; i < str.size(); i++) {
     cut.x = str[i] % 32 * 10;
