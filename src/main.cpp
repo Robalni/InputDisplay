@@ -29,8 +29,7 @@ int main()
   using std::cerr;
   using std::endl;
 
-  SDL_Init(SDL_INIT_VIDEO);
-  SDL_InitSubSystem(SDL_INIT_JOYSTICK);
+  SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
   IMG_Init(IMG_INIT_PNG);
   std::stringstream ss;
   Conf conf("config.txt");
