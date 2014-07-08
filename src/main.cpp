@@ -68,6 +68,7 @@ int main()
     win_height = conf.get_int("height");
 
   SDL_SetWindowSize(window, win_width, win_height);
+  SDL_RenderSetLogicalSize(renderer, win_width, win_height);
 
   bool running = true;
   SDL_Event event;
@@ -91,6 +92,9 @@ int main()
           break;
         case SDLK_r:
           // reload
+          break;
+        case SDLK_s:
+          SDL_SetWindowSize(window, win_width, win_height);
           break;
         }
         break;
