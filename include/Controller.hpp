@@ -27,6 +27,7 @@
 #include <vector>
 
 #include "Conf.hpp"
+#include "Controller_part.hpp"
 
 using std::cerr;
 using std::endl;
@@ -44,9 +45,12 @@ public:
   int get_width();
   int get_height();
 private:
+  bool load_buttons(Conf &conf);
+  bool load_axes(Conf &conf);
+  bool load_hats(Conf &conf);
   SDL_Surface *load_image(string const &name);
   SDL_Renderer *renderer;
-  vector <SDL_Texture*> textures_buttons;
+  vector <Controller_part> parts;
   SDL_Texture *texture_controller;
   SDL_Texture *texture_stick;
   string imgdir;

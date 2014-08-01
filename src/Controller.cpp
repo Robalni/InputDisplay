@@ -41,32 +41,73 @@ Controller::Controller(string const &imgdir, SDL_Renderer *renderer,
   this->texture_controller
     = SDL_CreateTextureFromSurface(this->renderer, surf);
   SDL_FreeSurface(surf);
-  surf = load_image("stick");
+  surf = this->load_image("stick");
   this->texture_stick = SDL_CreateTextureFromSurface(this->renderer, surf);
   SDL_FreeSurface(surf);
-  for (int i = 0; i < this->n_buttons; i++) {
-    stringstream ss;
-    ss << "button" << i;
-    string name = conf.get_value(ss.str());
-    this->textures_buttons.push_back(NULL);
-    if (name == "")
-      continue;
-    surf = load_image(name.c_str());
-    this->textures_buttons[i] =
-      SDL_CreateTextureFromSurface(this->renderer, surf);
-    SDL_FreeSurface(surf);
-  }
+  this->load_buttons(conf);
+  this->load_axes(conf);
+  this->load_hats(conf);
 }
 
 Controller::~Controller()
 {
   SDL_DestroyTexture(this->texture_controller);
   SDL_DestroyTexture(this->texture_stick);
-  for (int i = 0; i < this->n_buttons; i++) {
-    if (this->textures_buttons[i] != NULL)
-      SDL_DestroyTexture(this->textures_buttons[i]);
-  }
   //SDL_JoystickClose(this->joystick);
+}
+
+bool Controller::load_buttons(Conf &conf)
+{
+  SDL_Surface *surf;
+  SDL_Texture *text;
+  for (int i = 0; i < this->n_buttons; i++) {
+    stringstream ss;
+    ss << "button" << i;
+    string name = conf.get_value(ss.str());
+    if (name != "") {
+      surf = this->load_image(name.c_str());
+      text = SDL_CreateTextureFromSurface(this->renderer, surf);
+      this->parts.push_back(Button(i, this->joystick, text));
+      SDL_FreeSurface(surf);
+    }
+  }
+  return true;
+}
+
+bool Controller::load_axes(Conf &conf)
+{
+  SDL_Surface *surf;
+  SDL_Texture *text;
+  for (int i = 0; i < this->n_axes; i++) {
+    stringstream ss;
+    ss << "axis" << i;
+    string name = conf.get_value(ss.str());
+    if (name != "") {
+      surf = this->load_image(name.c_str());
+      text = SDL_CreateTextureFromSurface(this->renderer, surf);
+      this->parts.push_back(Button(i, this->joystick, text));
+      SDL_FreeSurface(surf);
+    }
+  }
+  return true;
+}
+
+bool Controller::load_hats(Conf &conf)
+{
+  SDL_Surface *surf;
+  SDL_Texture *text;
+  for (int i = 0; i < this->n_hats; i++) {
+    stringstream ss;
+    ss << "hat" << i;
+    string name = conf.get_value(ss.str());
+    if (name != "") {
+      surf = this->load_image(name.c_str());
+      text = SDL_CreateTextureFromSurface(this->renderer, surf);
+      this->parts.push_back(Button(i, this->joystick, text));
+      SDL_FreeSurface(surf);
+    }
+  }
+  return true;
 }
 
 SDL_Surface *Controller::load_image(string const &name)
@@ -82,13 +123,12 @@ SDL_Surface *Controller::load_image(string const &name)
 
 void Controller::render()
 {
-  int i;
-  SDL_RenderCopy(this->renderer, this->texture_controller, NULL, NULL);
-  for (i = 0; i < this->n_buttons; i++) {
-    if (SDL_JoystickGetButton(this->joystick, i)) {
-      SDL_RenderCopy(this->renderer, this->textures_buttons[i], NULL, NULL);
-    }
+  size_t i;
+
+  for (i = 0; i < this->parts.size(); i++) {
+    this->parts[i].render(this->renderer);
   }
+
   SDL_Rect rect;
   rect.w = this->width;
   rect.h = this->height;
