@@ -1,6 +1,7 @@
 include_directories(${InputDisplay_SOURCE_DIR}/include)
 
 if(MINGW)
+  set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
   link_libraries(mingw32 SDLmain SDL)
   add_executable(buttonmapper WIN32 main.cpp)
 else(MINGW)
