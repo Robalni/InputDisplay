@@ -6,7 +6,7 @@ width = auto
 height = auto
 fps = 60
 
-imgdir = img/default
+imgdir = img/n64
 
 # Button mapping below:
 
