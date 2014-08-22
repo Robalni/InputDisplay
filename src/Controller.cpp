@@ -27,7 +27,8 @@ Controller::Controller(string const &imgdir, SDL_Renderer *renderer,
   this->renderer = renderer;
   this->joystick = SDL_JoystickOpen(0);
   if (this->joystick == NULL) {
-    cerr << "Could not open joystick." << endl;
+    cerr << "Could not open joystick. Restart the program to try again."
+         << endl;
   }
 
   this->n_buttons = SDL_JoystickNumButtons(this->joystick);
@@ -38,11 +39,7 @@ Controller::Controller(string const &imgdir, SDL_Renderer *renderer,
   surf = load_image("controller");
   this->width = surf->w;
   this->height = surf->h;
-  this->texture_controller
-    = SDL_CreateTextureFromSurface(this->renderer, surf);
-  SDL_FreeSurface(surf);
-  surf = this->load_image("stick");
-  this->texture_stick = SDL_CreateTextureFromSurface(this->renderer, surf);
+  this->texture = SDL_CreateTextureFromSurface(renderer, surf);
   SDL_FreeSurface(surf);
   this->load_buttons(conf);
   this->load_axes(conf);
@@ -51,23 +48,26 @@ Controller::Controller(string const &imgdir, SDL_Renderer *renderer,
 
 Controller::~Controller()
 {
-  SDL_DestroyTexture(this->texture_controller);
-  SDL_DestroyTexture(this->texture_stick);
+  SDL_DestroyTexture(this->texture);
+  for (size_t i = 0; i < this->parts.size(); i++) {
+    delete this->parts[i];
+  }
   //SDL_JoystickClose(this->joystick);
 }
 
 bool Controller::load_buttons(Conf &conf)
 {
   SDL_Surface *surf;
-  SDL_Texture *text;
+  int action;
   for (int i = 0; i < this->n_buttons; i++) {
     stringstream ss;
     ss << "button" << i;
     string name = conf.get_value(ss.str());
+    action = SHOW;
     if (name != "") {
       surf = this->load_image(name.c_str());
-      text = SDL_CreateTextureFromSurface(this->renderer, surf);
-      this->parts.push_back(Button(i, this->joystick, text));
+      this->parts.push_back(new Button(this->joystick, i, action,
+                                       this->renderer, surf));
       SDL_FreeSurface(surf);
     }
   }
@@ -77,17 +77,25 @@ bool Controller::load_buttons(Conf &conf)
 bool Controller::load_axes(Conf &conf)
 {
   SDL_Surface *surf;
-  SDL_Texture *text;
-  for (int i = 0; i < this->n_axes; i++) {
-    stringstream ss;
-    ss << "axis" << i;
-    string name = conf.get_value(ss.str());
-    if (name != "") {
-      surf = this->load_image(name.c_str());
-      text = SDL_CreateTextureFromSurface(this->renderer, surf);
-      this->parts.push_back(Button(i, this->joystick, text));
-      SDL_FreeSurface(surf);
+  int action;
+  char sign = '+';
+  while (true) {
+    for (int i = 0; i < this->n_axes; i++) {
+      stringstream ss;
+      ss << "axis" << i << sign;
+      string name = conf.get_value(ss.str());
+      action = SHOW;
+      if (name != "") {
+        surf = this->load_image(name.c_str());
+        this->parts.push_back(new Axis(this->joystick, i, action,
+                                       this->renderer, surf));
+        SDL_FreeSurface(surf);
+      }
     }
+    if (sign == '-') {
+      break;
+    }
+    sign = '-';
   }
   return true;
 }
@@ -95,15 +103,16 @@ bool Controller::load_axes(Conf &conf)
 bool Controller::load_hats(Conf &conf)
 {
   SDL_Surface *surf;
-  SDL_Texture *text;
+  int action;
   for (int i = 0; i < this->n_hats; i++) {
     stringstream ss;
     ss << "hat" << i;
     string name = conf.get_value(ss.str());
+    action = SHOW;
     if (name != "") {
       surf = this->load_image(name.c_str());
-      text = SDL_CreateTextureFromSurface(this->renderer, surf);
-      this->parts.push_back(Button(i, this->joystick, text));
+      this->parts.push_back(new Hat(this->joystick, i, action,
+                                    this->renderer, surf));
       SDL_FreeSurface(surf);
     }
   }
@@ -115,7 +124,8 @@ SDL_Surface *Controller::load_image(string const &name)
   string filename = imgdir + "/" + name + ".png";
   SDL_Surface *img = IMG_Load(filename.c_str());
   if (img == NULL) {
-    cerr << "Could not load " << filename << ": " << IMG_GetError() << endl;
+    cerr << IMG_GetError() << endl;
+    exit(1);
     return NULL;
   }
   return img;
@@ -125,18 +135,14 @@ void Controller::render()
 {
   size_t i;
 
-  for (i = 0; i < this->parts.size(); i++) {
-    this->parts[i].render(this->renderer);
-  }
+  SDL_RenderCopy(this->renderer, this->texture, NULL, NULL);
 
-  SDL_Rect rect;
-  rect.w = this->width;
-  rect.h = this->height;
-  rect.x = SDL_JoystickGetAxis(this->joystick, this->stickx)
-    * this->stickmax / 32767;
-  rect.y = SDL_JoystickGetAxis(this->joystick, this->sticky)
-    * this->stickmax / 32767;
-  SDL_RenderCopy(this->renderer, this->texture_stick, NULL, &rect);
+  for (i = 0; i < this->parts.size(); i++) {
+    this->parts[i]->update();
+  }
+  for (i = 0; i < this->parts.size(); i++) {
+    this->parts[i]->render();
+  }
 }
 
 int Controller::get_width()

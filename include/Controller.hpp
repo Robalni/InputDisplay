@@ -50,9 +50,8 @@ private:
   bool load_hats(Conf &conf);
   SDL_Surface *load_image(string const &name);
   SDL_Renderer *renderer;
-  vector <Controller_part> parts;
-  SDL_Texture *texture_controller;
-  SDL_Texture *texture_stick;
+  vector <Controller_part*> parts;
+  SDL_Texture *texture;
   string imgdir;
   int stickx, sticky, stickmax;
   int width, height;

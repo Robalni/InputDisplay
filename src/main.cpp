@@ -48,7 +48,7 @@ int main()
     cerr << SDL_GetError() << endl;
     return 1;
   }
-  SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1"); 
+  SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
   SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
 

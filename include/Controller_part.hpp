@@ -18,6 +18,9 @@
 #ifndef CONTROLLER_PART_HPP
 #define CONTROLLER_PART_HPP
 
+#define AXIS_MAX 32767
+#define AXIS_MIN -32768
+
 #include <SDL2/SDL.h>
 
 class Controller_part
@@ -25,25 +28,48 @@ class Controller_part
 public:
   Controller_part();
   virtual ~Controller_part();
-  virtual bool render(SDL_Renderer *renderer);
+  void update();
+  void render();
 protected:
+  virtual bool is_pressed() = 0;
   int action;
+  int type;
   int index;
+  int show;
   SDL_Joystick *joystick;
+  SDL_Rect rect;
+  SDL_Renderer *renderer;
+  SDL_Texture * texture;
 };
 
 class Button : public Controller_part
 {
 public:
-  Button(int index, SDL_Joystick *joystick, SDL_Texture *texture);
-  ~Button();
-  bool render(SDL_Renderer *renderer);
+  Button(SDL_Joystick *joystick, int index, int action,
+         SDL_Renderer *renderer, SDL_Surface *surface);
 protected:
-  SDL_Texture *texture;
+  bool is_pressed();
 };
 
-enum aee
+class Axis : public Controller_part
 {
+public:
+  Axis(SDL_Joystick *joystick, int index, int action,
+       SDL_Renderer *renderer, SDL_Surface *surface);
+protected:
+  bool is_pressed();
+};
+
+class Hat : public Controller_part
+{
+public:
+  Hat(SDL_Joystick *joystick, int index, int action,
+      SDL_Renderer *renderer, SDL_Surface *surface);
+protected:
+  bool is_pressed();
+};
+
+enum {
   SHOW,
   MOVE_UP,
   MOVE_RIGHT,

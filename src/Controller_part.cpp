@@ -23,30 +23,81 @@ Controller_part::Controller_part()
 
 Controller_part::~Controller_part()
 {
-}
-
-Button::Button(int index, SDL_Joystick *joystick, SDL_Texture *texture)
-{
-  this->index = index;
-  this->joystick = joystick;
-  this->texture = texture;
-}
-
-Button::~Button()
-{
   SDL_DestroyTexture(this->texture);
 }
 
-bool Button::render(SDL_Renderer *renderer)
+void Controller_part::update()
 {
-  bool retval;
-  if (SDL_JoystickGetButton(this->joystick, this->index))
-    if (this->action == SHOW)
-      retval = (SDL_RenderCopy(renderer, this->texture, NULL, NULL) == 0);
-    else
-      retval = false;
-  else
-    retval = false;
+  switch (this->action) {
+  case SHOW:
+    this->show = this->is_pressed();
+    break;
+  }
+}
 
-  return retval;
+void Controller_part::render()
+{
+  if (this->show) {
+    SDL_RenderCopy(this->renderer, this->texture, NULL, &this->rect);
+  }
+}
+
+Button::Button(SDL_Joystick *joystick, int index, int action,
+               SDL_Renderer *renderer, SDL_Surface *surface)
+{
+  this->joystick = joystick;
+  this->index = index;
+  this->type = type;
+  this->renderer = renderer;
+  this->rect.w = surface->w;
+  this->rect.h = surface->h;
+  this->rect.x = 0;
+  this->rect.y = 0;
+  this->texture = SDL_CreateTextureFromSurface(renderer, surface);
+  this->action = action;
+}
+
+bool Button::is_pressed()
+{
+  return SDL_JoystickGetButton(this->joystick, this->index);
+}
+
+Axis::Axis(SDL_Joystick *joystick, int index, int action,
+           SDL_Renderer *renderer, SDL_Surface *surface)
+{
+  this->joystick = joystick;
+  this->index = index;
+  this->type = type;
+  this->renderer = renderer;
+  this->rect.w = surface->w;
+  this->rect.h = surface->h;
+  this->rect.x = 0;
+  this->rect.y = 0;
+  this->texture = SDL_CreateTextureFromSurface(renderer, surface);
+  this->action = action;
+}
+
+bool Axis::is_pressed()
+{
+  return SDL_JoystickGetAxis(this->joystick, this->index) > AXIS_MAX / 2;
+}
+
+Hat::Hat(SDL_Joystick *joystick, int index, int action,
+         SDL_Renderer *renderer, SDL_Surface *surface)
+{
+  this->joystick = joystick;
+  this->index = index;
+  this->type = type;
+  this->renderer = renderer;
+  this->rect.w = surface->w;
+  this->rect.h = surface->h;
+  this->rect.x = 0;
+  this->rect.y = 0;
+  this->texture = SDL_CreateTextureFromSurface(renderer, surface);
+  this->action = action;
+}
+
+bool Hat::is_pressed()
+{
+  return SDL_JoystickGetButton(this->joystick, this->index);
 }
