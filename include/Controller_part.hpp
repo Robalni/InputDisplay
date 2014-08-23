@@ -54,10 +54,11 @@ protected:
 class Axis : public Controller_part
 {
 public:
-  Axis(SDL_Joystick *joystick, int index, int action,
+  Axis(SDL_Joystick *joystick, int index, char sign, int action,
        SDL_Renderer *renderer, SDL_Surface *surface);
 protected:
   bool is_pressed();
+  char sign;
 };
 
 class Hat : public Controller_part

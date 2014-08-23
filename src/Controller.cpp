@@ -87,7 +87,7 @@ bool Controller::load_axes(Conf &conf)
       action = SHOW;
       if (name != "") {
         surf = this->load_image(name.c_str());
-        this->parts.push_back(new Axis(this->joystick, i, action,
+        this->parts.push_back(new Axis(this->joystick, i, sign, action,
                                        this->renderer, surf));
         SDL_FreeSurface(surf);
       }

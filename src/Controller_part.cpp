@@ -62,11 +62,12 @@ bool Button::is_pressed()
   return SDL_JoystickGetButton(this->joystick, this->index);
 }
 
-Axis::Axis(SDL_Joystick *joystick, int index, int action,
+Axis::Axis(SDL_Joystick *joystick, int index, char sign, int action,
            SDL_Renderer *renderer, SDL_Surface *surface)
 {
   this->joystick = joystick;
   this->index = index;
+  this->sign = sign;
   this->type = type;
   this->renderer = renderer;
   this->rect.w = surface->w;
@@ -79,7 +80,11 @@ Axis::Axis(SDL_Joystick *joystick, int index, int action,
 
 bool Axis::is_pressed()
 {
-  return SDL_JoystickGetAxis(this->joystick, this->index) > AXIS_MAX / 2;
+  if (this->sign == '-') {
+    return SDL_JoystickGetAxis(this->joystick, this->index) < AXIS_MIN / 2;
+  } else {
+    return SDL_JoystickGetAxis(this->joystick, this->index) > AXIS_MAX / 2;
+  }
 }
 
 Hat::Hat(SDL_Joystick *joystick, int index, int action,
