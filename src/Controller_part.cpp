@@ -87,11 +87,12 @@ bool Axis::is_pressed()
   }
 }
 
-Hat::Hat(SDL_Joystick *joystick, int index, int action,
+Hat::Hat(SDL_Joystick *joystick, int index, int direction, int action,
          SDL_Renderer *renderer, SDL_Surface *surface)
 {
   this->joystick = joystick;
   this->index = index;
+  this->direction = direction;
   this->type = type;
   this->renderer = renderer;
   this->rect.w = surface->w;
@@ -104,5 +105,5 @@ Hat::Hat(SDL_Joystick *joystick, int index, int action,
 
 bool Hat::is_pressed()
 {
-  return SDL_JoystickGetButton(this->joystick, this->index);
+  return SDL_JoystickGetHat(this->joystick, this->index) & this->direction;
 }

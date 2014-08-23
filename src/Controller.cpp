@@ -104,16 +104,23 @@ bool Controller::load_hats(Conf &conf)
 {
   SDL_Surface *surf;
   int action;
-  for (int i = 0; i < this->n_hats; i++) {
-    stringstream ss;
-    ss << "hat" << i;
-    string name = conf.get_value(ss.str());
-    action = SHOW;
-    if (name != "") {
-      surf = this->load_image(name.c_str());
-      this->parts.push_back(new Hat(this->joystick, i, action,
-                                    this->renderer, surf));
-      SDL_FreeSurface(surf);
+  char dirnames[] = "urdl";
+  char *dirname = dirnames;
+  int directions[] = {SDL_HAT_UP, SDL_HAT_RIGHT, SDL_HAT_DOWN, SDL_HAT_LEFT,
+                      SDL_HAT_CENTERED};
+  for (int *direction = directions; *direction != SDL_HAT_CENTERED;
+       direction++, dirname++) {
+    for (int i = 0; i < this->n_hats; i++) {
+      stringstream ss;
+      ss << "hat" << i << *dirname;
+      string name = conf.get_value(ss.str());
+      action = SHOW;
+      if (name != "") {
+        surf = this->load_image(name.c_str());
+        this->parts.push_back(new Hat(this->joystick, i, *direction, action,
+                                      this->renderer, surf));
+        SDL_FreeSurface(surf);
+      }
     }
   }
   return true;

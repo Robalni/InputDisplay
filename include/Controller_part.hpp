@@ -64,10 +64,11 @@ protected:
 class Hat : public Controller_part
 {
 public:
-  Hat(SDL_Joystick *joystick, int index, int action,
+  Hat(SDL_Joystick *joystick, int index, int direction, int action,
       SDL_Renderer *renderer, SDL_Surface *surface);
 protected:
   bool is_pressed();
+  int direction;
 };
 
 enum {
