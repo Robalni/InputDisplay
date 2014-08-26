@@ -49,10 +49,25 @@ Controller::Controller(string const &imgdir, SDL_Renderer *renderer,
 Controller::~Controller()
 {
   SDL_DestroyTexture(this->texture);
-  for (size_t i = 0; i < this->parts.size(); i++) {
-    delete this->parts[i];
+
+  map<string, Controller_part*>::iterator i;
+  for (i = this->parts.begin(); i != this->parts.end(); i++) {
+    delete i->second;
   }
+
   //SDL_JoystickClose(this->joystick);
+}
+
+int Controller::action_str_to_int(string const &str)
+{
+  int action;
+  if (str == "" || str == "show")
+    action = SHOW;
+  else if (str == "movex")
+    action = MOVEX;
+  else if (str == "movey")
+    action = MOVEY;
+  return action;
 }
 
 bool Controller::load_buttons(Conf &conf)
@@ -63,11 +78,18 @@ bool Controller::load_buttons(Conf &conf)
     stringstream ss;
     ss << "button" << i;
     string name = conf.get_value(ss.str());
-    action = SHOW;
+    action = action_str_to_int(conf.get_value(ss.str()+'a'));
+    int max = conf.get_int(ss.str()+'m');
     if (name != "") {
       surf = this->load_image(name.c_str());
-      this->parts.push_back(new Button(this->joystick, i, action,
-                                       this->renderer, surf));
+      if (this->parts.count(name) == 0) {
+        this->parts[name] = new Controller_part(this->renderer, surf,
+                                                this->joystick, action,
+                                                max);
+        this->parts[name]->add_button(i);
+      } else {
+        this->parts[name]->add_button(i);
+      }
       SDL_FreeSurface(surf);
     }
   }
@@ -84,11 +106,18 @@ bool Controller::load_axes(Conf &conf)
       stringstream ss;
       ss << "axis" << i << sign;
       string name = conf.get_value(ss.str());
-      action = SHOW;
+      action = action_str_to_int(conf.get_value(ss.str()+'a'));
+      int max = conf.get_int(ss.str()+'m');
       if (name != "") {
         surf = this->load_image(name.c_str());
-        this->parts.push_back(new Axis(this->joystick, i, sign, action,
-                                       this->renderer, surf));
+        if (this->parts.count(name) == 0) {
+          this->parts[name] = new Controller_part(this->renderer, surf,
+                                                  this->joystick, action,
+                                                  max);
+          this->parts[name]->add_axis(i, sign);
+        } else {
+          this->parts[name]->add_axis(i, sign);
+        }
         SDL_FreeSurface(surf);
       }
     }
@@ -114,11 +143,18 @@ bool Controller::load_hats(Conf &conf)
       stringstream ss;
       ss << "hat" << i << *dirname;
       string name = conf.get_value(ss.str());
-      action = SHOW;
+      action = action_str_to_int(conf.get_value(ss.str()+'a'));
+      int max = conf.get_int(ss.str()+'m');
       if (name != "") {
         surf = this->load_image(name.c_str());
-        this->parts.push_back(new Hat(this->joystick, i, *direction, action,
-                                      this->renderer, surf));
+        if (this->parts.count(name) == 0) {
+          this->parts[name] = new Controller_part(this->renderer, surf,
+                                                  this->joystick, action,
+                                                  max);
+          this->parts[name]->add_hat(i, *direction);
+        } else {
+          this->parts[name]->add_hat(i, *direction);
+        }
         SDL_FreeSurface(surf);
       }
     }
@@ -140,15 +176,12 @@ SDL_Surface *Controller::load_image(string const &name)
 
 void Controller::render()
 {
-  size_t i;
+  map<string, Controller_part*>::iterator i;
 
   SDL_RenderCopy(this->renderer, this->texture, NULL, NULL);
 
-  for (i = 0; i < this->parts.size(); i++) {
-    this->parts[i]->update();
-  }
-  for (i = 0; i < this->parts.size(); i++) {
-    this->parts[i]->render();
+  for (i = this->parts.begin(); i != this->parts.end(); i++) {
+    i->second->render();
   }
 }
 

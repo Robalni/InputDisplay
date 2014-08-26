@@ -45,12 +45,13 @@ public:
   int get_width();
   int get_height();
 private:
+  int action_str_to_int(string const &str);
   bool load_buttons(Conf &conf);
   bool load_axes(Conf &conf);
   bool load_hats(Conf &conf);
   SDL_Surface *load_image(string const &name);
   SDL_Renderer *renderer;
-  vector <Controller_part*> parts;
+  map <string, Controller_part*> parts;
   SDL_Texture *texture;
   string imgdir;
   int stickx, sticky, stickmax;

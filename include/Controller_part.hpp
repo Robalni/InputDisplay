@@ -18,65 +18,39 @@
 #ifndef CONTROLLER_PART_HPP
 #define CONTROLLER_PART_HPP
 
-#define AXIS_MAX 32767
-#define AXIS_MIN -32768
-
+#include <vector>
 #include <SDL2/SDL.h>
+
+#include "Real_part.hpp"
+
+using std::vector;
 
 class Controller_part
 {
 public:
-  Controller_part();
-  virtual ~Controller_part();
-  void update();
+  Controller_part(SDL_Renderer *renderer, SDL_Surface *surface,
+                  SDL_Joystick *joystick, int action, int max);
+  ~Controller_part();
+  void add_button(int index);
+  void add_axis(int index, char sign);
+  void add_hat(int index, int direction);
   void render();
 protected:
-  virtual bool is_pressed() = 0;
-  int action;
-  int type;
-  int index;
-  int show;
-  SDL_Joystick *joystick;
+  void update();
   SDL_Rect rect;
+  bool show;
   SDL_Renderer *renderer;
-  SDL_Texture * texture;
-};
-
-class Button : public Controller_part
-{
-public:
-  Button(SDL_Joystick *joystick, int index, int action,
-         SDL_Renderer *renderer, SDL_Surface *surface);
-protected:
-  bool is_pressed();
-};
-
-class Axis : public Controller_part
-{
-public:
-  Axis(SDL_Joystick *joystick, int index, char sign, int action,
-       SDL_Renderer *renderer, SDL_Surface *surface);
-protected:
-  bool is_pressed();
-  char sign;
-};
-
-class Hat : public Controller_part
-{
-public:
-  Hat(SDL_Joystick *joystick, int index, int direction, int action,
-      SDL_Renderer *renderer, SDL_Surface *surface);
-protected:
-  bool is_pressed();
-  int direction;
+  SDL_Texture *texture;
+  SDL_Joystick *joystick;
+  int action;
+  int max;
+  vector<Real_part*> real_parts;
 };
 
 enum {
   SHOW,
-  MOVE_UP,
-  MOVE_RIGHT,
-  MOVE_DOWN,
-  MOVE_LEFT
+  MOVEX,
+  MOVEY
 };
 
 #endif // CONTROLLER_PART_HPP

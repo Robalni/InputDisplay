@@ -26,7 +26,7 @@ hat0d = d-down
 hat0l = d-left
 
 # axisXt means means the treshold for the Xth axis (how far you have to press it).
-# axisX means what happens when you press it in the positive direction.
+# axisX+ means what happens when you press it in the positive direction.
 # axisX- means what happens when you press it in the negative direction.
 axis2t = 16384
 axis2+ = l
@@ -40,9 +40,15 @@ axis4t = 16384
 axis4+ = c-right
 axis4- = c-left
 
-# stickmax is how far the stick will move assuming the maximum input value is 32767
-# stickx is the axis for horizontal movement.
-# sticky is the axis for vertical movement.
-stickmax = 12
-stickx = 0
-sticky = 1
+axis0+ = stick
+axis0+a = movex
+axis0+m = 12
+axis0- = stick
+axis0-a = movex
+axis0-m = -12
+axis1+ = stick
+axis1+a = movey
+axis1+m = 12
+axis1- = stick
+axis1-a = movey
+axis1-m = -12
