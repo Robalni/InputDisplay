@@ -50,7 +50,13 @@ int main()
   }
   SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
-  SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
+  int red = 0;
+  int green = 0;
+  int blue = 0;
+  conf.get_int("red", red);
+  conf.get_int("green", green);
+  conf.get_int("blue", blue);
+  SDL_SetRenderDrawColor(renderer, red, green, blue, 0xFF);
 
   Controller *controller
     = new Controller(renderer, conf);
@@ -96,6 +102,13 @@ int main()
           conf.get_int("fps", fps);
           if (fps <= 0)
             fps = 1;
+          red = 0;
+          green = 0;
+          blue = 0;
+          conf.get_int("red", red);
+          conf.get_int("green", green);
+          conf.get_int("blue", blue);
+          SDL_SetRenderDrawColor(renderer, red, green, blue, 0xFF);
           delete controller;
           controller = new Controller(renderer, conf);
           break;

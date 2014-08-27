@@ -5,8 +5,12 @@
 width = auto
 height = auto
 fps = 60
-
 imgdir = img/n64
+
+# Background color (they should be 0 - 255)
+red = 0
+green = 0
+blue = 0
 
 # Button mapping below:
 
