@@ -40,6 +40,7 @@ axis4t = 16384
 axis4+ = c-right
 axis4- = c-left
 
+# Now let's make the analog stick.
 axis0+ = stick
 axis0+a = movex
 axis0+m = 12

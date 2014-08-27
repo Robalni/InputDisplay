@@ -27,6 +27,7 @@ public:
   virtual bool is_pressed() = 0;
   virtual int get_axis() = 0;
   int get_action() const;
+  int get_max() const;
 protected:
   SDL_Joystick *joystick;
   int index;
@@ -37,7 +38,7 @@ protected:
 class Button : public Real_part
 {
 public:
-  Button(SDL_Joystick *joystick, int index, int action);
+  Button(SDL_Joystick *joystick, int index, int action, int move_max);
   bool is_pressed();
   int get_axis();
 protected:
@@ -46,16 +47,17 @@ protected:
 class Axis : public Real_part
 {
 public:
-  Axis(SDL_Joystick *joystick, int index, int action);
+  Axis(SDL_Joystick *joystick, int index, char sign, int action, int move_max);
   bool is_pressed();
   int get_axis();
 protected:
+  char sign;
 };
 
 class Hat : public Real_part
 {
 public:
-  Hat(SDL_Joystick *joystick, int index, int direction, int action);
+  Hat(SDL_Joystick *joystick, int index, int direction, int action, int move_max);
   bool is_pressed();
   int get_axis();
 protected:

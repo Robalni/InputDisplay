@@ -19,11 +19,10 @@
 
 Controller_part::Controller_part(SDL_Renderer *renderer,
                                  SDL_Surface *surface,
-                                 SDL_Joystick *joystick, int max)
-  : renderer(renderer)
-  , joystick(joystick)
-  , max(max)
+                                 SDL_Joystick *joystick)
 {
+  this->renderer = renderer;
+  this->joystick = joystick;
   this->texture = SDL_CreateTextureFromSurface(renderer, surface);
   this->rect.x = 0;
   this->rect.y = 0;
@@ -37,21 +36,21 @@ Controller_part::~Controller_part()
   SDL_DestroyTexture(this->texture);
 }
 
-void Controller_part::add_button(int index, int action)
+void Controller_part::add_button(int index, int action, int max)
 {
-  Button *button = new Button(this->joystick, index, action);
+  Button *button = new Button(this->joystick, index, action, max);
   this->real_parts.push_back(button);
 }
 
-void Controller_part::add_axis(int index, char sign, int action)
+void Controller_part::add_axis(int index, char sign, int action, int max)
 {
-  Axis *axis = new Axis(this->joystick, index, action);
+  Axis *axis = new Axis(this->joystick, index, sign, action, max);
   this->real_parts.push_back(axis);
 }
 
-void Controller_part::add_hat(int index, int direction, int action)
+void Controller_part::add_hat(int index, int direction, int action, int max)
 {
-  Hat *hat = new Hat(this->joystick, index, direction, action);
+  Hat *hat = new Hat(this->joystick, index, direction, action, max);
   this->real_parts.push_back(hat);
 }
 
@@ -67,6 +66,9 @@ void Controller_part::update()
 {
   size_t i;
   Real_part *part;
+  int value;
+  this->rect.x = 0;
+  this->rect.y = 0;
   for (i = 0; i < this->real_parts.size(); i++) {
     part = this->real_parts[i];
     switch (part->get_action()) {
@@ -74,10 +76,14 @@ void Controller_part::update()
       this->show = part->is_pressed();
       break;
     case MOVEX:
-      this->rect.x = part->get_axis() * this->max / AXIS_MAX;
+      value = part->get_axis();
+      if (value > 0)
+        this->rect.x = part->get_axis() * part->get_max() / AXIS_MAX;
       break;
     case MOVEY:
-      this->rect.y = part->get_axis() * this->max / AXIS_MAX;
+      value = part->get_axis();
+      if (value > 0)
+        this->rect.y = part->get_axis() * part->get_max() / AXIS_MAX;
       break;
     }
   }

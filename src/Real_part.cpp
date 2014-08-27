@@ -26,11 +26,17 @@ int Real_part::get_action() const
   return this->action;
 }
 
-Button::Button(SDL_Joystick *joystick, int index, int action)
+int Real_part::get_max() const
+{
+  return this->move_max;
+}
+
+Button::Button(SDL_Joystick *joystick, int index, int action, int move_max)
 {
   this->joystick = joystick;
   this->index = index;
   this->action = action;
+  this->move_max = move_max;
 }
 
 bool Button::is_pressed()
@@ -43,29 +49,39 @@ int Button::get_axis()
   return SDL_JoystickGetButton(this->joystick, this->index) * AXIS_MAX;
 }
 
-Axis::Axis(SDL_Joystick *joystick, int index, int action)
+Axis::Axis(SDL_Joystick *joystick, int index, char sign, int action, int move_max)
 {
   this->joystick = joystick;
   this->index = index;
+  this->sign = sign;
   this->action = action;
+  this->move_max = move_max;
 }
 
 bool Axis::is_pressed()
 {
-  return SDL_JoystickGetAxis(this->joystick, this->index) > AXIS_MAX / 2;
+  if (this->sign == '-') {
+    return SDL_JoystickGetAxis(this->joystick, this->index) < AXIS_MIN / 2;
+  } else {
+    return SDL_JoystickGetAxis(this->joystick, this->index) > AXIS_MAX / 2;
+  }
 }
 
 int Axis::get_axis()
 {
-  return SDL_JoystickGetAxis(this->joystick, this->index);
+  if (this->sign == '-')
+    return -SDL_JoystickGetAxis(this->joystick, this->index);
+  else
+    return SDL_JoystickGetAxis(this->joystick, this->index);
 }
 
-Hat::Hat(SDL_Joystick *joystick, int index, int direction, int action)
+Hat::Hat(SDL_Joystick *joystick, int index, int direction, int action, int move_max)
 {
   this->joystick = joystick;
   this->index = index;
   this->direction = direction;
   this->action = action;
+  this->move_max = move_max;
 }
 
 bool Hat::is_pressed()
