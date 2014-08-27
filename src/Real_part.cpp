@@ -53,18 +53,20 @@ bool Axis::get_axis()
   return SDL_JoystickGetAxis(this->joystick, this->index);
 }
 
-Hat::Hat(SDL_Joystick *joystick, int index)
+Hat::Hat(SDL_Joystick *joystick, int index, int direction)
 {
   this->joystick = joystick;
   this->index = index;
+  this->direction = direction;
 }
 
 bool Hat::is_pressed()
 {
-  return SDL_JoystickGetHat(this->joystick, this->index);
+  return SDL_JoystickGetHat(this->joystick, this->index) & this->direction;
 }
 
 bool Hat::get_axis()
 {
-  return SDL_JoystickGetHat(this->joystick, this->index) * AXIS_MAX;
+  return (SDL_JoystickGetHat(this->joystick, this->index) & this->direction)
+    * AXIS_MAX;
 }

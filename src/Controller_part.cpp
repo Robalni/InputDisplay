@@ -52,7 +52,7 @@ void Controller_part::add_axis(int index, char sign)
 
 void Controller_part::add_hat(int index, int direction)
 {
-  Hat *hat = new Hat(this->joystick, index);
+  Hat *hat = new Hat(this->joystick, index, direction);
   this->real_parts.push_back(hat);
 }
 

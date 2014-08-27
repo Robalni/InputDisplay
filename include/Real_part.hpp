@@ -53,8 +53,9 @@ protected:
 class Hat : public Real_part
 {
 public:
-  Hat(SDL_Joystick *joystick, int index);
+  Hat(SDL_Joystick *joystick, int index, int direction);
   bool is_pressed();
   bool get_axis();
 protected:
+  int direction;
 };
