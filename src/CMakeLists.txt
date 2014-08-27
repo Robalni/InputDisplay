@@ -2,7 +2,7 @@ include_directories(${InputDisplay_SOURCE_DIR}/include)
 
 if(MINGW)
   set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
-  link_libraries(mingw32 SDL2 SDL2_image)
+  link_libraries(mingw32 SDL2main SDL2 SDL2_image)
   add_executable(InputDisplay WIN32 main.cpp Conf.cpp Controller.cpp Controller_part.cpp Real_part.cpp)
 else(MINGW)
   link_libraries(SDL2 SDL2_image)

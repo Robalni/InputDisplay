@@ -23,7 +23,7 @@
 #include "Conf.hpp"
 #include "Controller.hpp"
 
-int main()
+int main(int argc, char *argv[])
 {
   using std::string;
   using std::cerr;
