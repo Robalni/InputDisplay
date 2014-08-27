@@ -5,8 +5,12 @@
 width = auto
 height = auto
 fps = 60
+imgdir = img/n64
 
-imgdir = img/default
+# Background color (they should be 0 - 255)
+red = 0
+green = 0
+blue = 0
 
 # Button mapping below:
 
@@ -25,24 +29,34 @@ hat0r = d-right
 hat0d = d-down
 hat0l = d-left
 
-# axisXt means means the treshold for the Xth axis (how far you have to press it).
-# axisX means what happens when you press it in the positive direction.
+# axisX+t and axisX-t mean the treshold for the Xth axis (how far you have to
+# press it).
+# axisX+ means what happens when you press it in the positive direction.
 # axisX- means what happens when you press it in the negative direction.
-axis2t = 16384
-axis2 = l
+default_treshold = 16384
+
+axis2+ = l
 axis2- = c-right
 
-axis3t = 16384
-axis3 = c-down
+axis3+ = c-down
 axis3- = c-up
 
-axis4t = 16384
-axis4 = c-right
+axis4+ = c-right
 axis4- = c-left
 
-# stickmax is how far the stick will move assuming the maximum input value is 32767
-# stickx is the axis for horizontal movement.
-# sticky is the axis for vertical movement.
-stickmax = 12
-stickx = 0
-sticky = 1
+# Now let's make the analog stick.
+# axisX+a and axisX-a mean what happens when you use it.
+# axisX+m and axisX-m mean how far it moves.
+# You can add a and m to buttons and hats too if you want them to move.
+axis0+ = stick
+axis0+a = movex
+axis0+m = 12
+axis0- = stick
+axis0-a = movex
+axis0-m = -12
+axis1+ = stick
+axis1+a = movey
+axis1+m = 12
+axis1- = stick
+axis1-a = movey
+axis1-m = -12
