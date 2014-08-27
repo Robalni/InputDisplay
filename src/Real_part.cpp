@@ -21,6 +21,10 @@ Real_part::Real_part()
 {
 }
 
+Real_part::~Real_part()
+{
+}
+
 int Real_part::get_action() const
 {
   return this->action;
@@ -37,6 +41,10 @@ Button::Button(SDL_Joystick *joystick, int index, int action, int move_max)
   this->index = index;
   this->action = action;
   this->move_max = move_max;
+}
+
+Button::~Button()
+{
 }
 
 bool Button::is_pressed()
@@ -58,6 +66,10 @@ Axis::Axis(SDL_Joystick *joystick, int index, char sign, int action,
   this->action = action;
   this->move_max = move_max;
   this->treshold = treshold;
+}
+
+Axis::~Axis()
+{
 }
 
 bool Axis::is_pressed()
@@ -85,6 +97,10 @@ Hat::Hat(SDL_Joystick *joystick, int index, int direction, int action,
   this->direction = direction;
   this->action = action;
   this->move_max = move_max;
+}
+
+Hat::~Hat()
+{
 }
 
 bool Hat::is_pressed()

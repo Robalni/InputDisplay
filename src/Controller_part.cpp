@@ -34,6 +34,10 @@ Controller_part::Controller_part(SDL_Renderer *renderer,
 Controller_part::~Controller_part()
 {
   SDL_DestroyTexture(this->texture);
+  size_t i;
+  for (i = 0; i < this->real_parts.size(); i++) {
+    delete this->real_parts[i];
+  }
 }
 
 void Controller_part::add_button(int index, int action, int max)
