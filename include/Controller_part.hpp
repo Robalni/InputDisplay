@@ -32,7 +32,7 @@ public:
                   SDL_Joystick *joystick);
   ~Controller_part();
   void add_button(int index, int action, int max);
-  void add_axis(int index, char sign, int action, int max);
+  void add_axis(int index, char sign, int action, int max, int treshold);
   void add_hat(int index, int direction, int action, int max);
   void render();
 protected:

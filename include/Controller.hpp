@@ -54,7 +54,6 @@ private:
   map <string, Controller_part*> parts;
   SDL_Texture *texture;
   string imgdir;
-  int stickx, sticky, stickmax;
   int width, height;
   SDL_Joystick *joystick;
   int n_buttons, n_axes, n_hats;

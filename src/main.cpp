@@ -60,12 +60,12 @@ int main()
   if (win_width_str == "auto" || win_width_str == "")
     win_width = controller.get_width();
   else
-    win_width = conf.get_int("width");
+    conf.get_int("width", win_width);
   win_height_str = conf.get_value("height");
   if (win_height_str == "auto" || win_height_str == "")
     win_height = controller.get_height();
   else
-    win_height = conf.get_int("height");
+    conf.get_int("height", win_height);
 
   SDL_SetWindowSize(window, win_width, win_height);
   SDL_RenderSetLogicalSize(renderer, win_width, win_height);
@@ -73,9 +73,9 @@ int main()
   bool running = true;
   SDL_Event event;
   string button_name;
-  int fps;
-  fps = conf.get_int("fps");
-  if (fps < 1)
+  int fps = 0;
+  conf.get_int("fps", fps);
+  if (fps <= 0)
     fps = 1;
   while (running) {
     ss.str("");

@@ -76,9 +76,15 @@ string Conf::get_value(string const &key)
   return this->settings[key];
 }
 
-int Conf::get_int(string const &key)
+bool Conf::get_int(string const &key, int &var)
 {
-  return atoi(this->get_value(key).c_str());
+  string val = this->get_value(key);
+  if (val == "") {
+    return false;
+  } else {
+    var = atoi(val.c_str());
+    return true;
+  }
 }
 
 bool Conf::reload()

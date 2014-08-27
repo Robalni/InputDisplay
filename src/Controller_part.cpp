@@ -42,9 +42,10 @@ void Controller_part::add_button(int index, int action, int max)
   this->real_parts.push_back(button);
 }
 
-void Controller_part::add_axis(int index, char sign, int action, int max)
+void Controller_part::add_axis(int index, char sign, int action, int max,
+                               int treshold)
 {
-  Axis *axis = new Axis(this->joystick, index, sign, action, max);
+  Axis *axis = new Axis(this->joystick, index, sign, action, max, treshold);
   this->real_parts.push_back(axis);
 }
 

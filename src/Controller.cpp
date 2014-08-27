@@ -20,9 +20,6 @@
 Controller::Controller(string const &imgdir, SDL_Renderer *renderer,
                        Conf &conf)
 {
-  this->stickx = conf.get_int("stickx");
-  this->sticky = conf.get_int("sticky");
-  this->stickmax = conf.get_int("stickmax");
   this->imgdir = imgdir;
   this->renderer = renderer;
   this->joystick = SDL_JoystickOpen(0);
@@ -73,13 +70,14 @@ int Controller::action_str_to_int(string const &str)
 bool Controller::load_buttons(Conf &conf)
 {
   SDL_Surface *surf;
-  int action;
+  int action, max;
+  string name;
   for (int i = 0; i < this->n_buttons; i++) {
     stringstream ss;
     ss << "button" << i;
-    string name = conf.get_value(ss.str());
+    name = conf.get_value(ss.str());
     action = action_str_to_int(conf.get_value(ss.str()+'a'));
-    int max = conf.get_int(ss.str()+'m');
+    conf.get_int(ss.str()+'m', max);
     if (name != "") {
       surf = this->load_image(name.c_str());
       if (this->parts.count(name) == 0) {
@@ -98,23 +96,28 @@ bool Controller::load_buttons(Conf &conf)
 bool Controller::load_axes(Conf &conf)
 {
   SDL_Surface *surf;
-  int action;
+  int action, max, treshold, deftreshold;
   char sign = '+';
+  string name;
+  if (!conf.get_int("default_treshold", deftreshold))
+    deftreshold = -1;
   while (true) {
     for (int i = 0; i < this->n_axes; i++) {
       stringstream ss;
       ss << "axis" << i << sign;
-      string name = conf.get_value(ss.str());
+      name = conf.get_value(ss.str());
       action = action_str_to_int(conf.get_value(ss.str()+'a'));
-      int max = conf.get_int(ss.str()+'m');
+      conf.get_int(ss.str()+'m', max);
+      if (!conf.get_int(ss.str()+'t', treshold))
+        treshold = deftreshold;
       if (name != "") {
         surf = this->load_image(name.c_str());
         if (this->parts.count(name) == 0) {
           this->parts[name] = new Controller_part(this->renderer, surf,
                                                   this->joystick);
-          this->parts[name]->add_axis(i, sign, action, max);
+          this->parts[name]->add_axis(i, sign, action, max, treshold);
         } else {
-          this->parts[name]->add_axis(i, sign, action, max);
+          this->parts[name]->add_axis(i, sign, action, max, treshold);
         }
         SDL_FreeSurface(surf);
       }
@@ -130,7 +133,8 @@ bool Controller::load_axes(Conf &conf)
 bool Controller::load_hats(Conf &conf)
 {
   SDL_Surface *surf;
-  int action;
+  int action, max;
+  string name;
   char dirnames[] = "urdl";
   char *dirname = dirnames;
   int directions[] = {SDL_HAT_UP, SDL_HAT_RIGHT, SDL_HAT_DOWN, SDL_HAT_LEFT,
@@ -140,9 +144,9 @@ bool Controller::load_hats(Conf &conf)
     for (int i = 0; i < this->n_hats; i++) {
       stringstream ss;
       ss << "hat" << i << *dirname;
-      string name = conf.get_value(ss.str());
+      name = conf.get_value(ss.str());
       action = action_str_to_int(conf.get_value(ss.str()+'a'));
-      int max = conf.get_int(ss.str()+'m');
+      conf.get_int(ss.str()+'m', max);
       if (name != "") {
         surf = this->load_image(name.c_str());
         if (this->parts.count(name) == 0) {

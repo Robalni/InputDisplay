@@ -47,17 +47,20 @@ protected:
 class Axis : public Real_part
 {
 public:
-  Axis(SDL_Joystick *joystick, int index, char sign, int action, int move_max);
+  Axis(SDL_Joystick *joystick, int index, char sign, int action,
+       int move_max, int treshold);
   bool is_pressed();
   int get_axis();
 protected:
   char sign;
+  int treshold;
 };
 
 class Hat : public Real_part
 {
 public:
-  Hat(SDL_Joystick *joystick, int index, int direction, int action, int move_max);
+  Hat(SDL_Joystick *joystick, int index, int direction, int action,
+      int move_max);
   bool is_pressed();
   int get_axis();
 protected:
