@@ -4,4 +4,4 @@ This program displays a Nintendo 64 controller and what inputs you do on your co
 
 Run `cmake .` to create the makefiles that you need to compile the program. You also need SDL libraries and headers.
 
-![screenshot](http://i.imgur.com/R8A1bvG.png)
+![screenshot](https://i.imgur.com/VWgd9ip.png)
