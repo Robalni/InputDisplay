@@ -19,10 +19,9 @@
 
 Controller_part::Controller_part(SDL_Renderer *renderer,
                                  SDL_Surface *surface,
-                                 SDL_Joystick *joystick, int action, int max)
+                                 SDL_Joystick *joystick, int max)
   : renderer(renderer)
   , joystick(joystick)
-  , action(action)
   , max(max)
 {
   this->texture = SDL_CreateTextureFromSurface(renderer, surface);
@@ -38,21 +37,21 @@ Controller_part::~Controller_part()
   SDL_DestroyTexture(this->texture);
 }
 
-void Controller_part::add_button(int index)
+void Controller_part::add_button(int index, int action)
 {
-  Button *button = new Button(this->joystick, index);
+  Button *button = new Button(this->joystick, index, action);
   this->real_parts.push_back(button);
 }
 
-void Controller_part::add_axis(int index, char sign)
+void Controller_part::add_axis(int index, char sign, int action)
 {
-  Axis *axis = new Axis(this->joystick, index);
+  Axis *axis = new Axis(this->joystick, index, action);
   this->real_parts.push_back(axis);
 }
 
-void Controller_part::add_hat(int index, int direction)
+void Controller_part::add_hat(int index, int direction, int action)
 {
-  Hat *hat = new Hat(this->joystick, index, direction);
+  Hat *hat = new Hat(this->joystick, index, direction, action);
   this->real_parts.push_back(hat);
 }
 
@@ -67,7 +66,19 @@ void Controller_part::render()
 void Controller_part::update()
 {
   size_t i;
+  Real_part *part;
   for (i = 0; i < this->real_parts.size(); i++) {
-    this->show = this->real_parts[i]->is_pressed();
+    part = this->real_parts[i];
+    switch (part->get_action()) {
+    case SHOW:
+      this->show = part->is_pressed();
+      break;
+    case MOVEX:
+      this->rect.x = part->get_axis();
+      break;
+    case MOVEY:
+      this->rect.y = part->get_axis();
+      break;
+    }
   }
 }

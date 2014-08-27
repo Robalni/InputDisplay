@@ -84,11 +84,10 @@ bool Controller::load_buttons(Conf &conf)
       surf = this->load_image(name.c_str());
       if (this->parts.count(name) == 0) {
         this->parts[name] = new Controller_part(this->renderer, surf,
-                                                this->joystick, action,
-                                                max);
-        this->parts[name]->add_button(i);
+                                                this->joystick, max);
+        this->parts[name]->add_button(i, action);
       } else {
-        this->parts[name]->add_button(i);
+        this->parts[name]->add_button(i, action);
       }
       SDL_FreeSurface(surf);
     }
@@ -112,11 +111,10 @@ bool Controller::load_axes(Conf &conf)
         surf = this->load_image(name.c_str());
         if (this->parts.count(name) == 0) {
           this->parts[name] = new Controller_part(this->renderer, surf,
-                                                  this->joystick, action,
-                                                  max);
-          this->parts[name]->add_axis(i, sign);
+                                                  this->joystick, max);
+          this->parts[name]->add_axis(i, sign, action);
         } else {
-          this->parts[name]->add_axis(i, sign);
+          this->parts[name]->add_axis(i, sign, action);
         }
         SDL_FreeSurface(surf);
       }
@@ -149,11 +147,10 @@ bool Controller::load_hats(Conf &conf)
         surf = this->load_image(name.c_str());
         if (this->parts.count(name) == 0) {
           this->parts[name] = new Controller_part(this->renderer, surf,
-                                                  this->joystick, action,
-                                                  max);
-          this->parts[name]->add_hat(i, *direction);
+                                                  this->joystick, max);
+          this->parts[name]->add_hat(i, *direction, action);
         } else {
-          this->parts[name]->add_hat(i, *direction);
+          this->parts[name]->add_hat(i, *direction, action);
         }
         SDL_FreeSurface(surf);
       }

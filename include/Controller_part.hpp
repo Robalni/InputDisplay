@@ -29,11 +29,11 @@ class Controller_part
 {
 public:
   Controller_part(SDL_Renderer *renderer, SDL_Surface *surface,
-                  SDL_Joystick *joystick, int action, int max);
+                  SDL_Joystick *joystick, int max);
   ~Controller_part();
-  void add_button(int index);
-  void add_axis(int index, char sign);
-  void add_hat(int index, int direction);
+  void add_button(int index, int action);
+  void add_axis(int index, char sign, int action);
+  void add_hat(int index, int direction, int action);
   void render();
 protected:
   void update();

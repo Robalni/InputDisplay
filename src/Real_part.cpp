@@ -21,10 +21,16 @@ Real_part::Real_part()
 {
 }
 
-Button::Button(SDL_Joystick *joystick, int index)
+int Real_part::get_action() const
+{
+  return this->action;
+}
+
+Button::Button(SDL_Joystick *joystick, int index, int action)
 {
   this->joystick = joystick;
   this->index = index;
+  this->action = action;
 }
 
 bool Button::is_pressed()
@@ -37,10 +43,11 @@ bool Button::get_axis()
   return SDL_JoystickGetButton(this->joystick, this->index) * AXIS_MAX;
 }
 
-Axis::Axis(SDL_Joystick *joystick, int index)
+Axis::Axis(SDL_Joystick *joystick, int index, int action)
 {
   this->joystick = joystick;
   this->index = index;
+  this->action = action;
 }
 
 bool Axis::is_pressed()
@@ -53,11 +60,12 @@ bool Axis::get_axis()
   return SDL_JoystickGetAxis(this->joystick, this->index);
 }
 
-Hat::Hat(SDL_Joystick *joystick, int index, int direction)
+Hat::Hat(SDL_Joystick *joystick, int index, int direction, int action)
 {
   this->joystick = joystick;
   this->index = index;
   this->direction = direction;
+  this->action = action;
 }
 
 bool Hat::is_pressed()
