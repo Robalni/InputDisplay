@@ -5,4 +5,3 @@ project(InputDisplay)
 SET(CMAKE_CXX_FLAGS "-g -Wall -Wextra -pedantic")
 
 add_subdirectory(src)
-add_subdirectory(buttonmapper-src)
