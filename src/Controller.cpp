@@ -56,7 +56,7 @@ Controller::~Controller()
 
 int Controller::action_str_to_int(string const &str)
 {
-  int action;
+  int action = SHOW;
   if (str == "" || str == "show")
     action = SHOW;
   else if (str == "movex")
