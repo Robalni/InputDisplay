@@ -52,18 +52,19 @@ int main()
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
   SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
 
-  Controller controller(conf.get_value("imgdir"), renderer, conf);
+  Controller *controller
+    = new Controller(renderer, conf);
 
   int win_width, win_height;
   string win_width_str, win_height_str;
   win_width_str = conf.get_value("width");
   if (win_width_str == "auto" || win_width_str == "")
-    win_width = controller.get_width();
+    win_width = controller->get_width();
   else
     conf.get_int("width", win_width);
   win_height_str = conf.get_value("height");
   if (win_height_str == "auto" || win_height_str == "")
-    win_height = controller.get_height();
+    win_height = controller->get_height();
   else
     conf.get_int("height", win_height);
 
@@ -91,7 +92,12 @@ int main()
           running = false;
           break;
         case SDLK_r:
-          // reload
+          conf.reload();
+          conf.get_int("fps", fps);
+          if (fps <= 0)
+            fps = 1;
+          delete controller;
+          controller = new Controller(renderer, conf);
           break;
         case SDLK_s:
           SDL_SetWindowSize(window, win_width, win_height);
@@ -102,11 +108,12 @@ int main()
     }
 
     SDL_RenderClear(renderer);
-    controller.render();
+    controller->render();
     SDL_RenderPresent(renderer);
     SDL_Delay(1000 / fps);
   }
 
+  delete controller;
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
   IMG_Quit();

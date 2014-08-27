@@ -17,10 +17,9 @@
 
 #include "Controller.hpp"
 
-Controller::Controller(string const &imgdir, SDL_Renderer *renderer,
-                       Conf &conf)
+Controller::Controller(SDL_Renderer *renderer, Conf &conf)
 {
-  this->imgdir = imgdir;
+  this->imgdir = conf.get_value("imgdir");
   this->renderer = renderer;
   this->joystick = SDL_JoystickOpen(0);
   if (this->joystick == NULL) {
@@ -52,7 +51,7 @@ Controller::~Controller()
     delete i->second;
   }
 
-  //SDL_JoystickClose(this->joystick);
+  SDL_JoystickClose(this->joystick);
 }
 
 int Controller::action_str_to_int(string const &str)

@@ -39,7 +39,7 @@ using std::stringstream;
 class Controller
 {
 public:
-  Controller(string const &imgdir, SDL_Renderer *renderer, Conf &conf);
+  Controller(SDL_Renderer *renderer, Conf &conf);
   ~Controller();
   void render();
   int get_width();
