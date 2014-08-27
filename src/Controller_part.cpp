@@ -74,21 +74,25 @@ void Controller_part::update()
   int value;
   this->rect.x = 0;
   this->rect.y = 0;
+  this->show = false;
   for (i = 0; i < this->real_parts.size(); i++) {
     part = this->real_parts[i];
     switch (part->get_action()) {
     case SHOW:
-      this->show = part->is_pressed();
+      if (part->is_pressed())
+        this->show = true;
       break;
     case MOVEX:
       value = part->get_axis();
       if (value > 0)
         this->rect.x = part->get_axis() * part->get_max() / AXIS_MAX;
+      this->show = true;
       break;
     case MOVEY:
       value = part->get_axis();
       if (value > 0)
         this->rect.y = part->get_axis() * part->get_max() / AXIS_MAX;
+      this->show = true;
       break;
     }
   }
