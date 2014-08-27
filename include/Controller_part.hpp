@@ -42,7 +42,6 @@ protected:
   SDL_Renderer *renderer;
   SDL_Texture *texture;
   SDL_Joystick *joystick;
-  int action;
   int max;
   vector<Real_part*> real_parts;
 };

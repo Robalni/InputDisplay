@@ -74,10 +74,10 @@ void Controller_part::update()
       this->show = part->is_pressed();
       break;
     case MOVEX:
-      this->rect.x = part->get_axis();
+      this->rect.x = part->get_axis() * this->max / AXIS_MAX;
       break;
     case MOVEY:
-      this->rect.y = part->get_axis();
+      this->rect.y = part->get_axis() * this->max / AXIS_MAX;
       break;
     }
   }
