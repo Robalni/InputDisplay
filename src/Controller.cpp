@@ -23,8 +23,8 @@ Controller::Controller(SDL_Renderer *renderer, Conf &conf)
   this->renderer = renderer;
   this->joystick = SDL_JoystickOpen(0);
   if (this->joystick == NULL) {
-    cerr << "Could not open joystick. Restart the program to try again."
-         << endl;
+    cerr << "Could not open joystick. Restart the program or press r"
+      " to try again." << endl;
   }
 
   this->n_buttons = SDL_JoystickNumButtons(this->joystick);
