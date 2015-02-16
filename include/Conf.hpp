@@ -40,6 +40,7 @@ public:
   bool get_int(string const &key, int &var);
   bool reload();
 private:
+  bool readfile(string const &filename);
   bool readfile();
   string fname;
   map<string, string> settings;

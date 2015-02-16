@@ -33,19 +33,15 @@ Conf::~Conf()
 bool Conf::load(string const &fname)
 {
   this->fname = fname;
-  if (!this->readfile()) {
-    cerr << "Failed to open " << this->fname << endl;
-    exit(1);
-  }
-  return true;
+  return this->readfile();
 }
 
-bool Conf::readfile()
+bool Conf::readfile(string const &filename)
 {
   using namespace std;
   string line, key, value;
   ifstream file;
-  file.open(fname.c_str());
+  file.open(filename.c_str());
   if (file.is_open()) {
     while (getline(file, line)) {
       if (line[0] == '#') {
@@ -61,14 +57,33 @@ bool Conf::readfile()
         value = line.substr(found_eq + 1);
         trim(value);
         settings[key] = value;
+      } else {
+        size_t start_first_word = line.find_first_not_of(" \t");
+        size_t after_first_word = line.find_first_of(" \t", start_first_word);
+        if (after_first_word == string::npos
+            || start_first_word == string::npos)
+          continue;
+        string command = line.substr(0, after_first_word);
+        string argument = line.substr(command.length());
+        trim(command);
+        trim(argument);
+        if (command == "include" && argument.length() > 0) {
+          readfile(argument);
+        }
       }
     }
   } else {
+    cerr << "Failed to open " << filename << endl;
     return false;
   }
   file.close();
 
   return true;
+}
+
+bool Conf::readfile()
+{
+  return readfile(this->fname);
 }
 
 string Conf::get_value(string const &key)
