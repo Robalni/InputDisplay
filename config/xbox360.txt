@@ -1,0 +1,72 @@
+imgdir = img/xbox360
+
+# buttonX means the Xth button on the controller.
+button0 = a
+button1 = b
+button2 = x
+button3 = y
+button4 = lb
+button5 = rb
+button6 = back
+button7 = start
+button8 = xbox
+
+# hatX means the Xth hat on the controller.
+# u/r/d/l means up/right/down/left.
+hat0u = d-up
+hat0r = d-right
+hat0d = d-down
+hat0l = d-left
+
+# axisX+t and axisX-t mean the treshold for the Xth axis (how far you have to
+# press it).
+# axisX+ means what happens when you press it in the positive direction.
+# axisX- means what happens when you press it in the negative direction.
+default_treshold = 16384
+
+axis2+ = lt
+axis2+a = movex
+axis2+m = 30
+
+axis2- = lt
+axis2-a = movex
+axis2-m = -30
+
+axis5+ = rt
+axis5+a = movex
+axis5+m = 30
+
+axis5- = rt
+axis5-a = movex
+axis5-m = -30
+
+# Now let's make the left analog stick.
+# axisX+a and axisX-a mean what happens when you use it.
+# axisX+m and axisX-m mean how far it moves.
+# You can add a and m to buttons and hats too if you want them to move.
+axis0+ = left-stick
+axis0+a = movex
+axis0+m = 12
+axis0- = left-stick
+axis0-a = movex
+axis0-m = -12
+axis1+ = left-stick
+axis1+a = movey
+axis1+m = 12
+axis1- = left-stick
+axis1-a = movey
+axis1-m = -12
+
+# Right stick
+axis3+ = right-stick
+axis3+a = movex
+axis3+m = 12
+axis3- = right-stick
+axis3-a = movex
+axis3-m = -12
+axis4+ = right-stick
+axis4+a = movey
+axis4+m = 12
+axis4- = right-stick
+axis4-a = movey
+axis4-m = -12
