@@ -44,7 +44,6 @@ private:
   bool readfile();
   string fname;
   map<string, string> settings;
-  void trim(string &str);
 };
 
 #endif // CONF_HPP
