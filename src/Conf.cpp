@@ -39,45 +39,31 @@ bool Conf::load(string const &fname)
 bool Conf::readfile(string const &filename)
 {
   using namespace std;
-  string line, key, value;
+  string line;
   ifstream file;
+  Conf_line cline;
+
   file.open(filename.c_str());
-  if (file.is_open()) {
-    while (getline(file, line)) {
-      if (line[0] == '#') {
-        continue;
-      }
-      if (line.size() > 0 && line[line.size() - 1] < 32) {
-        line.resize(line.size() - 1);
-      }
-      size_t found_eq = line.find('=');
-      if (found_eq != string::npos) {
-        key = line.substr(0, found_eq);
-        trim(key);
-        value = line.substr(found_eq + 1);
-        trim(value);
-        settings[key] = value;
-      } else {
-        size_t start_first_word = line.find_first_not_of(" \t");
-        size_t after_first_word = line.find_first_of(" \t", start_first_word);
-        if (after_first_word == string::npos
-            || start_first_word == string::npos)
-          continue;
-        string command = line.substr(0, after_first_word);
-        string argument = line.substr(command.length());
-        trim(command);
-        trim(argument);
-        if (command == "include" && argument.length() > 0) {
-          readfile(argument);
-        }
-      }
-    }
-  } else {
+  if (!file.is_open()) {
     cerr << "Failed to open " << filename << endl;
     return false;
   }
-  file.close();
 
+  while (getline(file, line)) {
+    cline.set(line);
+    switch (cline.type) {
+    case variable:
+      settings[cline.key] = cline.value;
+      break;
+    case command:
+      if (cline.command == "include" && cline.n_args == 1) {
+        readfile(cline.arguments[0]);
+      }
+      break;
+    }
+  }
+
+  file.close();
   return true;
 }
 
