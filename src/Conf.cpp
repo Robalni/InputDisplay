@@ -16,6 +16,7 @@
 */
 
 #include "Conf.hpp"
+#include "Conf_line.hpp"
 
 Conf::Conf()
 {
