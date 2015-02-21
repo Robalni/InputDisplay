@@ -42,7 +42,8 @@ bool Conf::readfile(string const &filename)
   using namespace std;
   string line;
   ifstream file;
-  Conf_line cline;
+  Conf_line *cline;
+  size_t line_number = 1;
 
   file.open(filename.c_str());
   if (!file.is_open()) {
@@ -51,17 +52,26 @@ bool Conf::readfile(string const &filename)
   }
 
   while (getline(file, line)) {
-    cline.set(line);
-    switch (cline.type) {
-    case variable:
-      settings[cline.key] = cline.value;
+    cline = new Conf_line(line);
+
+    switch (cline->type) {
+    case VARIABLE:
+      settings[cline->key] = cline->value;
       break;
-    case command:
-      if (cline.command == "include" && cline.n_args == 1) {
-        readfile(cline.arguments[0]);
+    case COMMAND:
+      if (cline->words[0] == "include" && cline->words.size() == 2) {
+        readfile(cline->words[1]);
       }
       break;
+    case IGNORE:
+      break;
+    default:
+      cerr << "Error in " << filename << " at line " << line_number << "."
+           << endl;
     }
+
+    delete cline;
+    line_number++;
   }
 
   file.close();

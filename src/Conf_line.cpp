@@ -20,6 +20,66 @@
 #include <string>
 #include <vector>
 
-Conf_line::set(std::string line)
+Conf_line::Conf_line(std::string const &line)
 {
+  size_t eq_sign = line.find('=');
+  size_t first_non_blank = line.find_first_not_of(" \t\r");
+
+  type = UNKNOWN;
+
+  if (first_non_blank == std::string::npos || line[first_non_blank] == '#') {
+    type = IGNORE;
+  } else if (eq_sign != std::string::npos) {
+    key = trim(line.substr(0, eq_sign));
+    value = trim(line.substr(eq_sign + 1));
+    if (key.length() > 0 && value.length() > 0) {
+      type = VARIABLE;
+    }
+  } else {
+    words = split(line);
+    if (words.size() > 0) {
+      type = COMMAND;
+    }
+  }
+}
+
+std::vector<std::string> Conf_line::split(std::string const &str)
+{
+  std::vector<std::string> vec;
+  size_t first = 0;
+  size_t length = 0;
+
+  while (find_next_word(str, first, length)) {
+    vec.push_back(str.substr(first, length));
+    first += length;
+  }
+
+  return vec;
+}
+
+bool Conf_line::find_next_word(std::string const &str,
+                               size_t &first, size_t &length)
+{
+  first = str.find_first_not_of(" \t\r", first);
+  if (first == std::string::npos)
+    return false;
+
+  length = str.find_first_of(" \t\r", first);
+  if (length == std::string::npos)
+    length = str.length();
+  length -= first;
+
+  return true;
+}
+
+std::string Conf_line::trim(std::string const &str)
+{
+  size_t first = str.find_first_not_of(" \t\r");
+  size_t last = str.find_last_not_of(" \t\r");
+
+  if (first == std::string::npos) {
+    return std::string("");
+  } else {
+    return str.substr(first, last - first + 1);
+  }
 }

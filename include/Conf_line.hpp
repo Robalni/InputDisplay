@@ -19,19 +19,37 @@
 #define CONF_LINE_HPP
 
 #include <string>
+#include <vector>
+
+enum Line_type {
+  UNKNOWN, IGNORE, VARIABLE, COMMAND
+};
 
 class Conf_line
 {
 public:
-  using std::string;
-  using std::vector;
+  Conf_line(std::string const &line);
 
-  void set(string line);
+  // If type is VARIABLE, key and value are the variable name and the
+  // value of that variable.
+  //
+  // If type is COMMAND, there is always a words[0] that is the
+  // command name and the rest of words is the arguments.
+  Line_type type;
 
-  string key;
-  string value;
-  string command;
-  vector<string> arguments;
-}
+  std::string key;
+  std::string value;
+  std::vector<std::string> words;
+
+private:
+  std::vector<std::string> split(std::string const &str);
+
+  // This function changes FIRST and LENGTH to the position of the
+  // first character and the length of the next word.  It will start
+  // looking at the character at FIRST.
+  bool find_next_word(std::string const &str, size_t &first, size_t &length);
+
+  std::string trim(std::string const &str);
+};
 
 #endif // CONF_LINE_HPP
