@@ -1,5 +1,3 @@
-include_directories(${InputDisplay_SOURCE_DIR}/include)
-
 if(MINGW)
   set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
   link_libraries(mingw32 SDL2main SDL2 SDL2_image)
