@@ -58,8 +58,7 @@ int main(int argc, char *argv[])
   conf.get_int("blue", blue);
   SDL_SetRenderDrawColor(renderer, red, green, blue, 0xFF);
 
-  Controller *controller
-    = new Controller(renderer, conf);
+  Controller *controller = new Controller(renderer, conf);
 
   int win_width, win_height;
   string win_width_str, win_height_str;
