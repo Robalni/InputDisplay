@@ -82,10 +82,8 @@ bool Controller::load_buttons(Conf &conf)
       if (this->parts.count(name) == 0) {
         this->parts[name] = new Controller_part(this->renderer, surf,
                                                 this->joystick);
-        this->parts[name]->add_button(i, action, max);
-      } else {
-        this->parts[name]->add_button(i, action, max);
       }
+      this->parts[name]->add_button(i, action, max);
       SDL_FreeSurface(surf);
     }
   }
@@ -114,10 +112,8 @@ bool Controller::load_axes(Conf &conf)
         if (this->parts.count(name) == 0) {
           this->parts[name] = new Controller_part(this->renderer, surf,
                                                   this->joystick);
-          this->parts[name]->add_axis(i, sign, action, max, treshold);
-        } else {
-          this->parts[name]->add_axis(i, sign, action, max, treshold);
         }
+        this->parts[name]->add_axis(i, sign, action, max, treshold);
         SDL_FreeSurface(surf);
       }
     }
@@ -151,10 +147,8 @@ bool Controller::load_hats(Conf &conf)
         if (this->parts.count(name) == 0) {
           this->parts[name] = new Controller_part(this->renderer, surf,
                                                   this->joystick);
-          this->parts[name]->add_hat(i, *direction, action, max);
-        } else {
-          this->parts[name]->add_hat(i, *direction, action, max);
         }
+        this->parts[name]->add_hat(i, *direction, action, max);
         SDL_FreeSurface(surf);
       }
     }
