@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2014  Robert Alm Nilsson <rorialni@gmail.com>
+  Copyright (C) 2014, 2015  Robert Alm Nilsson <rorialni@gmail.com>
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
