@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2014  Robert Alm Nilsson <rorialni@gmail.com>
+  Copyright (C) 2014, 2015  Robert Alm Nilsson <rorialni@gmail.com>
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -22,6 +22,11 @@
 
 #include "Conf.hpp"
 #include "Controller.hpp"
+
+void set_window_size_from_conf(Conf &conf, Controller *controller,
+                               SDL_Window *window, SDL_Renderer *renderer);
+
+void set_background_from_conf(Conf &conf, SDL_Renderer *renderer);
 
 int main(int argc, char *argv[])
 {
@@ -50,31 +55,12 @@ int main(int argc, char *argv[])
   }
   SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
-  int red = 0;
-  int green = 0;
-  int blue = 0;
-  conf.get_int("red", red);
-  conf.get_int("green", green);
-  conf.get_int("blue", blue);
-  SDL_SetRenderDrawColor(renderer, red, green, blue, 0xFF);
+
+  set_background_from_conf(conf, renderer);
 
   Controller *controller = new Controller(renderer, conf);
 
-  int win_width, win_height;
-  string win_width_str, win_height_str;
-  win_width_str = conf.get_value("width");
-  if (win_width_str == "auto" || win_width_str == "")
-    win_width = controller->get_width();
-  else
-    conf.get_int("width", win_width);
-  win_height_str = conf.get_value("height");
-  if (win_height_str == "auto" || win_height_str == "")
-    win_height = controller->get_height();
-  else
-    conf.get_int("height", win_height);
-
-  SDL_SetWindowSize(window, win_width, win_height);
-  SDL_RenderSetLogicalSize(renderer, win_width, win_height);
+  set_window_size_from_conf(conf, controller, window, renderer);
 
   bool running = true;
   SDL_Event event;
@@ -101,18 +87,12 @@ int main(int argc, char *argv[])
           conf.get_int("fps", fps);
           if (fps <= 0)
             fps = 1;
-          red = 0;
-          green = 0;
-          blue = 0;
-          conf.get_int("red", red);
-          conf.get_int("green", green);
-          conf.get_int("blue", blue);
-          SDL_SetRenderDrawColor(renderer, red, green, blue, 0xFF);
+          set_background_from_conf(conf, renderer);
           delete controller;
           controller = new Controller(renderer, conf);
           break;
         case SDLK_s:
-          SDL_SetWindowSize(window, win_width, win_height);
+          set_window_size_from_conf(conf, controller, window, renderer);
           break;
         }
         break;
@@ -131,4 +111,37 @@ int main(int argc, char *argv[])
   IMG_Quit();
   SDL_Quit();
   return 0;
+}
+
+void set_window_size_from_conf(Conf &conf, Controller *controller,
+                               SDL_Window *window, SDL_Renderer *renderer)
+{
+  int win_width, win_height;
+  string win_width_str, win_height_str;
+
+  win_width_str = conf.get_value("width");
+  if (win_width_str == "auto" || win_width_str == "")
+    win_width = controller->get_width();
+  else
+    conf.get_int("width", win_width);
+
+  win_height_str = conf.get_value("height");
+  if (win_height_str == "auto" || win_height_str == "")
+    win_height = controller->get_height();
+  else
+    conf.get_int("height", win_height);
+
+  SDL_SetWindowSize(window, win_width, win_height);
+  SDL_RenderSetLogicalSize(renderer, win_width, win_height);
+}
+
+void set_background_from_conf(Conf &conf, SDL_Renderer *renderer)
+{
+  int red = 0;
+  int green = 0;
+  int blue = 0;
+  conf.get_int("red", red);
+  conf.get_int("green", green);
+  conf.get_int("blue", blue);
+  SDL_SetRenderDrawColor(renderer, red, green, blue, 0xFF);
 }
