@@ -32,7 +32,6 @@ void set_background_from_conf(Conf &conf, SDL_Renderer *renderer);
 
 int main(int argc, char *argv[])
 {
-  using std::string;
   using std::cerr;
   using std::endl;
 
@@ -66,7 +65,6 @@ int main(int argc, char *argv[])
 
   bool running = true;
   SDL_Event event;
-  string button_name;
   while (running) {
     while (SDL_PollEvent(&event)) {
       switch (event.type) {
@@ -124,7 +122,7 @@ void set_window_size_from_conf(Conf &conf, Controller *controller,
                                SDL_Window *window, SDL_Renderer *renderer)
 {
   int win_width, win_height;
-  string win_width_str, win_height_str;
+  std::string win_width_str, win_height_str;
 
   win_width_str = conf.get_value("width");
   if (win_width_str == "auto" || win_width_str == "")
