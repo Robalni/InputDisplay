@@ -18,7 +18,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
-#include <sstream>
 
 #include "Conf.hpp"
 #include "Controller.hpp"
@@ -39,7 +38,6 @@ int main(int argc, char *argv[])
 
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
   IMG_Init(IMG_INIT_PNG);
-  std::stringstream ss;
   Conf conf("config.txt", false);
 
   SDL_Window *window = SDL_CreateWindow("InputDisplay",
@@ -70,7 +68,6 @@ int main(int argc, char *argv[])
   SDL_Event event;
   string button_name;
   while (running) {
-    ss.str("");
     while (SDL_PollEvent(&event)) {
       switch (event.type) {
       case SDL_QUIT:
