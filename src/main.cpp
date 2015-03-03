@@ -37,7 +37,6 @@ int main(int argc, char *argv[])
 
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
   IMG_Init(IMG_INIT_PNG);
-  Conf conf("config.txt", false);
 
   SDL_Window *window = SDL_CreateWindow("InputDisplay",
                                         SDL_WINDOWPOS_UNDEFINED,
@@ -56,6 +55,7 @@ int main(int argc, char *argv[])
   SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
+  Conf conf("config.txt", false);
   Controller *controller;
   int fps = 0;
 
