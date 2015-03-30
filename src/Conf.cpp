@@ -22,19 +22,16 @@ Conf::Conf()
 {
 }
 
-Conf::Conf(string const &fname)
+Conf::Conf(string const &fname, bool autoload)
 {
-  this->load(fname);
+  this->fname = fname;
+  if (autoload) {
+    this->readfile();
+  }
 }
 
 Conf::~Conf()
 {
-}
-
-bool Conf::load(string const &fname)
-{
-  this->fname = fname;
-  return this->readfile();
 }
 
 bool Conf::readfile(string const &filename)

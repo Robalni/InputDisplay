@@ -33,9 +33,8 @@ class Conf
 {
 public:
   Conf();
-  Conf(string const &fname);
+  Conf(string const &fname, bool autoload = true);
   virtual ~Conf();
-  bool load(string const &fname);
   string get_value(string const &key);
   bool get_int(string const &key, int &var);
   bool reload();

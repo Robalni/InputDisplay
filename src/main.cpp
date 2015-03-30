@@ -18,10 +18,12 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
-#include <sstream>
 
 #include "Conf.hpp"
 #include "Controller.hpp"
+
+void reload(Conf &conf, Controller **controller, int &fps,
+            SDL_Renderer *renderer);
 
 void set_window_size_from_conf(Conf &conf, Controller *controller,
                                SDL_Window *window, SDL_Renderer *renderer);
@@ -30,14 +32,11 @@ void set_background_from_conf(Conf &conf, SDL_Renderer *renderer);
 
 int main(int argc, char *argv[])
 {
-  using std::string;
   using std::cerr;
   using std::endl;
 
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
   IMG_Init(IMG_INIT_PNG);
-  std::stringstream ss;
-  Conf conf("config.txt");
 
   SDL_Window *window = SDL_CreateWindow("InputDisplay",
                                         SDL_WINDOWPOS_UNDEFINED,
@@ -56,21 +55,17 @@ int main(int argc, char *argv[])
   SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
-  set_background_from_conf(conf, renderer);
+  Conf conf("config.txt", false);
+  Controller *controller;
+  int fps = 0;
 
-  Controller *controller = new Controller(renderer, conf);
+  reload(conf, &controller, fps, renderer);
 
   set_window_size_from_conf(conf, controller, window, renderer);
 
   bool running = true;
   SDL_Event event;
-  string button_name;
-  int fps = 0;
-  conf.get_int("fps", fps);
-  if (fps <= 0)
-    fps = 1;
   while (running) {
-    ss.str("");
     while (SDL_PollEvent(&event)) {
       switch (event.type) {
       case SDL_QUIT:
@@ -83,13 +78,7 @@ int main(int argc, char *argv[])
           running = false;
           break;
         case SDLK_r:
-          conf.reload();
-          conf.get_int("fps", fps);
-          if (fps <= 0)
-            fps = 1;
-          set_background_from_conf(conf, renderer);
-          delete controller;
-          controller = new Controller(renderer, conf);
+          reload(conf, &controller, fps, renderer);
           break;
         case SDLK_s:
           set_window_size_from_conf(conf, controller, window, renderer);
@@ -113,11 +102,27 @@ int main(int argc, char *argv[])
   return 0;
 }
 
+void reload(Conf &conf, Controller **controller, int &fps,
+            SDL_Renderer *renderer)
+{
+  conf.reload();
+  conf.get_int("fps", fps);
+  if (fps <= 0)
+    fps = 1;
+
+  set_background_from_conf(conf, renderer);
+
+  if (controller == NULL) {
+    delete controller;
+  }
+  *controller = new Controller(renderer, conf);
+}
+
 void set_window_size_from_conf(Conf &conf, Controller *controller,
                                SDL_Window *window, SDL_Renderer *renderer)
 {
   int win_width, win_height;
-  string win_width_str, win_height_str;
+  std::string win_width_str, win_height_str;
 
   win_width_str = conf.get_value("width");
   if (win_width_str == "auto" || win_width_str == "")
