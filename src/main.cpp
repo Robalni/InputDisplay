@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
   Conf conf("config.txt", false);
-  Controller *controller;
+  Controller *controller = NULL;
   int fps = 0;
 
   reload(conf, &controller, fps, renderer);
@@ -112,8 +112,8 @@ void reload(Conf &conf, Controller **controller, int &fps,
 
   set_background_from_conf(conf, renderer);
 
-  if (controller == NULL) {
-    delete controller;
+  if (*controller != NULL) {
+    delete *controller;
   }
   *controller = new Controller(renderer, conf);
 }
