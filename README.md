@@ -26,3 +26,19 @@ cmake -DCMAKE_BUILD_TYPE=Release .
 
 make
 ```
+
+### Fedora
+
+Building InputDisplay requires these packages: cmake gcc-c++
+SDL2-devel SDL2_image-devel.
+
+Commands (after you download and cd to this directory):
+
+```sh
+su -c "dnf install cmake gcc-c++ SDL2-devel SDL2_image-devel"
+
+# Type Debug instead of Release if you want to debug.
+cmake -DCMAKE_BUILD_TYPE=Release .
+
+make
+```
