@@ -18,12 +18,11 @@ libsdl2-image-dev cmake.
 
 Commands (after you download and cd to this directory):
 
-```
+```sh
 su -c "apt-get -y install cmake libsdl2-dev libsdl2-image-dev"
 
 # Type Debug instead of Release if you want to debug.
 cmake -DCMAKE_BUILD_TYPE=Release .
 
 make
-
 ```
