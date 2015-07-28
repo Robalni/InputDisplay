@@ -19,8 +19,8 @@
 #include <SDL2/SDL_image.h>
 #include <iostream>
 
-#include "Conf.hpp"
-#include "Controller.hpp"
+#include "conf.hpp"
+#include "controller.hpp"
 
 void reload(Conf &conf, Controller **controller, int &fps,
             SDL_Renderer *renderer);

@@ -15,8 +15,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "Conf.hpp"
-#include "Conf_line.hpp"
+#include "conf.hpp"
+#include "conf_line.hpp"
 
 Conf::Conf()
 {

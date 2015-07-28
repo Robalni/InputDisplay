@@ -15,7 +15,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "Controller.hpp"
+#include "controller.hpp"
 
 Controller::Controller(SDL_Renderer *renderer, Conf &conf)
 {

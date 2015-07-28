@@ -15,7 +15,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "Controller_part.hpp"
+#include "controller_part.hpp"
 
 Controller_part::Controller_part(SDL_Renderer *renderer,
                                  SDL_Surface *surface,

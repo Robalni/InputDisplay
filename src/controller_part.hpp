@@ -15,48 +15,40 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef CONTROLLER_HPP
-#define CONTROLLER_HPP
+#ifndef CONTROLLER_PART_HPP
+#define CONTROLLER_PART_HPP
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <string>
-#include <sstream>
-#include <iostream>
-#include <map>
 #include <vector>
+#include <SDL2/SDL.h>
 
-#include "Conf.hpp"
-#include "Controller_part.hpp"
+#include "real_part.hpp"
 
-using std::cerr;
-using std::endl;
-using std::string;
-using std::map;
 using std::vector;
-using std::stringstream;
 
-class Controller
+class Controller_part
 {
 public:
-  Controller(SDL_Renderer *renderer, Conf &conf);
-  ~Controller();
+  Controller_part(SDL_Renderer *renderer, SDL_Surface *surface,
+                  SDL_Joystick *joystick);
+  ~Controller_part();
+  void add_button(int index, int action, int max);
+  void add_axis(int index, char sign, int action, int max, int treshold);
+  void add_hat(int index, int direction, int action, int max);
   void render();
-  int get_width();
-  int get_height();
-private:
-  int action_str_to_int(string const &str);
-  bool load_buttons(Conf &conf);
-  bool load_axes(Conf &conf);
-  bool load_hats(Conf &conf);
-  SDL_Surface *load_image(string const &name);
+protected:
+  void update();
+  SDL_Rect rect;
+  bool show;
   SDL_Renderer *renderer;
-  map <string, Controller_part*> parts;
   SDL_Texture *texture;
-  string imgdir;
-  int width, height;
   SDL_Joystick *joystick;
-  int n_buttons, n_axes, n_hats;
+  vector<Real_part*> real_parts;
 };
 
-#endif // CONTROLLER_HPP
+enum {
+  SHOW,
+  MOVEX,
+  MOVEY
+};
+
+#endif // CONTROLLER_PART_HPP
