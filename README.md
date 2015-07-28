@@ -13,13 +13,13 @@ get n64 and xbox 360 controller images.  I may add more later.
 
 ### Debian
 
-Building InputDisplay requires these packages: libsdl2-dev
-libsdl2-image-dev cmake.
+Building InputDisplay requires these packages: cmake g++ libsdl2-dev
+libsdl2-image-dev.
 
 Commands (after you download and cd to this directory):
 
 ```sh
-su -c "apt-get -y install cmake libsdl2-dev libsdl2-image-dev"
+su -c "apt-get -y install cmake g++ libsdl2-dev libsdl2-image-dev"
 
 # Type Debug instead of Release if you want to debug.
 cmake -DCMAKE_BUILD_TYPE=Release .
