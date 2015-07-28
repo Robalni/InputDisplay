@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 2.6)
 
 project(InputDisplay)
 
-SET(CMAKE_CXX_FLAGS "-g -Wall -Wextra -pedantic")
+set(CMAKE_CXX_FLAGS_DEBUG "-std=gnu++03 -g -Wall -Wextra -pedantic")
+set(CMAKE_CXX_FLAGS_RELEASE "-std=gnu++03 -Os")
 
 add_subdirectory(src)
