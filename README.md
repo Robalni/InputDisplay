@@ -9,6 +9,16 @@ get n64 and xbox 360 controller images.  I may add more later.
 ![screenshot Nintendo 64](http://www.robalni.org/input-display/n64.png)
 ![screenshot Xbox 360](http://www.robalni.org/input-display/xbox360.png)
 
+## How to use
+
+Key    | Function
+-------|------------------------
+R      | Reload everything
+S      | Reset window size
+Tab    | Select another joystick
+Escape | Quit
+Q      | Quit
+
 ## Compile
 
 ### Debian
