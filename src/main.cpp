@@ -83,6 +83,9 @@ int main(int argc, char *argv[])
         case SDLK_s:
           set_window_size_from_conf(conf, controller, window, renderer);
           break;
+        case SDLK_TAB:
+          controller->open_another_joystick();
+          break;
         }
         break;
       }

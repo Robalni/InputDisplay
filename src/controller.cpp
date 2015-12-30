@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2014  Robert Alm Nilsson <rorialni@gmail.com>
+  Copyright (C) 2014, 2015  Robert Alm Nilsson <rorialni@gmail.com>
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -21,12 +21,8 @@ Controller::Controller(SDL_Renderer *renderer, Conf &conf)
 {
   this->imgdir = conf.get_value("imgdir");
   this->renderer = renderer;
-  this->joystick = SDL_JoystickOpen(0);
-  if (this->joystick == NULL) {
-    cerr << "Could not open joystick. Restart the program or press r"
-      " to try again." << endl;
-  }
-
+  this->joystick = NULL;
+  this->open_joystick();
   this->n_buttons = SDL_JoystickNumButtons(this->joystick);
   this->n_hats = SDL_JoystickNumHats(this->joystick);
   this->n_axes = SDL_JoystickNumAxes(this->joystick);
@@ -51,7 +47,58 @@ Controller::~Controller()
     delete i->second;
   }
 
-  SDL_JoystickClose(this->joystick);
+  if (SDL_JoystickGetAttached(this->joystick)) {
+    SDL_JoystickClose(this->joystick);
+  }
+}
+
+bool Controller::open_joystick(int first_try)
+{
+  int i;
+  int joy_n = SDL_NumJoysticks();
+  int joy_index;
+  const char *joy_name = NULL;
+  if (SDL_JoystickGetAttached(this->joystick)) {
+    SDL_JoystickClose(this->joystick);
+  }
+  if (joy_n == 1) {
+    cerr << "\nThere is 1 joystick connected." << endl;
+  } else {
+    cerr << "\nThere are " << joy_n << " joysticks connected." << endl;
+  }
+  this->joystick = NULL;
+  for (i = first_try; i < first_try + joy_n; i++) {
+    joy_index = i % joy_n;
+    this->joystick = SDL_JoystickOpen(joy_index);
+    if (this->joystick) {
+      break;
+    } else {
+      joy_name = SDL_JoystickNameForIndex(joy_index);
+      cerr << "Could not open joystick " << joy_index << " ("
+           << (joy_name ? joy_name : "") << ")"<< endl;
+    }
+  }
+  if (this->joystick) {
+    joy_name = SDL_JoystickNameForIndex(joy_index);
+    cerr << "Opened joystick " << joy_index << " ("
+         << (joy_name ? joy_name : "")
+         <<  ")\nYou can open another one with the tab key." << endl;
+    this->joystick_index = joy_index;
+    return true;
+  } else {
+    cerr << "Could not open any joystick. Restart the program or press r"
+      " to try again." << endl;
+    return false;
+  }
+}
+
+bool Controller::open_another_joystick()
+{
+  if (SDL_JoystickGetAttached(this->joystick)) {
+    return this->open_joystick((joystick_index + 1) % SDL_NumJoysticks());
+  } else {
+    return this->open_joystick(0);
+  }
 }
 
 int Controller::action_str_to_int(string const &str)

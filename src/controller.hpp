@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2014  Robert Alm Nilsson <rorialni@gmail.com>
+  Copyright (C) 2014, 2015  Robert Alm Nilsson <rorialni@gmail.com>
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -44,7 +44,9 @@ public:
   void render();
   int get_width();
   int get_height();
+  bool open_another_joystick();
 private:
+  bool open_joystick(int first_try = 0);
   int action_str_to_int(string const &str);
   bool load_buttons(Conf &conf);
   bool load_axes(Conf &conf);
@@ -56,6 +58,7 @@ private:
   string imgdir;
   int width, height;
   SDL_Joystick *joystick;
+  int joystick_index;
   int n_buttons, n_axes, n_hats;
 };
 
