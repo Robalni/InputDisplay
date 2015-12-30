@@ -101,6 +101,11 @@ bool Controller::open_another_joystick()
   }
 }
 
+char const *Controller::get_joystick_name() const
+{
+  return SDL_JoystickName(this->joystick);
+}
+
 int Controller::action_str_to_int(string const &str)
 {
   int action = SHOW;

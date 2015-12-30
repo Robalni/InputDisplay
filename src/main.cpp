@@ -18,9 +18,12 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
+#include <string>
 
 #include "conf.hpp"
 #include "controller.hpp"
+
+#define PROGRAM_NAME "InputDisplay"
 
 void reload(Conf &conf, Controller **controller, int &fps,
             SDL_Renderer *renderer);
@@ -30,6 +33,8 @@ void set_window_size_from_conf(Conf &conf, Controller *controller,
 
 void set_background_from_conf(Conf &conf, SDL_Renderer *renderer);
 
+void set_window_title(SDL_Window *window, Controller *controller);
+
 int main(int argc, char *argv[])
 {
   using std::cerr;
@@ -38,7 +43,7 @@ int main(int argc, char *argv[])
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
   IMG_Init(IMG_INIT_PNG);
 
-  SDL_Window *window = SDL_CreateWindow("InputDisplay",
+  SDL_Window *window = SDL_CreateWindow(PROGRAM_NAME,
                                         SDL_WINDOWPOS_UNDEFINED,
                                         SDL_WINDOWPOS_UNDEFINED,
                                         100, 100, // Will resize later.
@@ -60,7 +65,7 @@ int main(int argc, char *argv[])
   int fps = 0;
 
   reload(conf, &controller, fps, renderer);
-
+  set_window_title(window, controller);
   set_window_size_from_conf(conf, controller, window, renderer);
 
   bool running = true;
@@ -79,12 +84,14 @@ int main(int argc, char *argv[])
           break;
         case SDLK_r:
           reload(conf, &controller, fps, renderer);
+          set_window_title(window, controller);
           break;
         case SDLK_s:
           set_window_size_from_conf(conf, controller, window, renderer);
           break;
         case SDLK_TAB:
           controller->open_another_joystick();
+          set_window_title(window, controller);
           break;
         }
         break;
@@ -152,4 +159,18 @@ void set_background_from_conf(Conf &conf, SDL_Renderer *renderer)
   conf.get_int("green", green);
   conf.get_int("blue", blue);
   SDL_SetRenderDrawColor(renderer, red, green, blue, 0xFF);
+}
+
+void set_window_title(SDL_Window *window, Controller *controller)
+{
+  std::string str(PROGRAM_NAME);
+  const char *joy_name = controller->get_joystick_name();
+  if (joy_name) {
+    str += " (";
+    str += joy_name;
+    str += ")";
+  } else {
+    str += " (No controller - Press R to reload)";
+  }
+  SDL_SetWindowTitle(window, str.c_str());
 }

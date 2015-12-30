@@ -45,6 +45,7 @@ public:
   int get_width();
   int get_height();
   bool open_another_joystick();
+  char const *get_joystick_name() const;
 private:
   bool open_joystick(int first_try = 0);
   int action_str_to_int(string const &str);
