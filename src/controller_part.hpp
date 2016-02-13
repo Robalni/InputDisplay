@@ -15,8 +15,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef CONTROLLER_PART_HPP
-#define CONTROLLER_PART_HPP
+#pragma once
 
 #include <vector>
 #include <SDL2/SDL.h>
@@ -50,5 +49,3 @@ enum {
   MOVEX,
   MOVEY
 };
-
-#endif // CONTROLLER_PART_HPP

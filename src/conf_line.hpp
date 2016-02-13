@@ -15,8 +15,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef CONF_LINE_HPP
-#define CONF_LINE_HPP
+#pragma once
 
 #include <string>
 #include <vector>
@@ -51,5 +50,3 @@ private:
 
   std::string trim(std::string const &str);
 };
-
-#endif // CONF_LINE_HPP

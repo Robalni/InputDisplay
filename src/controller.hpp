@@ -15,8 +15,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef CONTROLLER_HPP
-#define CONTROLLER_HPP
+#pragma once
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -62,5 +61,3 @@ private:
   int joystick_index;
   int n_buttons, n_axes, n_hats;
 };
-
-#endif // CONTROLLER_HPP

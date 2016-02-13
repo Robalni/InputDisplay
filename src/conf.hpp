@@ -15,8 +15,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef CONF_HPP
-#define CONF_HPP
+#pragma once
 
 #include <iostream>
 #include <cstdlib>
@@ -44,5 +43,3 @@ private:
   string fname;
   map<string, string> settings;
 };
-
-#endif // CONF_HPP
