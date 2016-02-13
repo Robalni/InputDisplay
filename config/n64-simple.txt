@@ -1,0 +1,48 @@
+imgdir = img/n64-simple
+
+# buttonX means the Xth button on the controller.
+button0 = a
+button1 = start
+button2 = b
+button3 = c-up
+button4 = z
+button5 = r
+
+# hatX means the Xth hat on the controller.
+# u/r/d/l means up/right/down/left.
+hat0u = d-up
+hat0r = d-right
+hat0d = d-down
+hat0l = d-left
+
+# axisX+t and axisX-t mean the treshold for the Xth axis (how far you have to
+# press it).
+# axisX+ means what happens when you press it in the positive direction.
+# axisX- means what happens when you press it in the negative direction.
+default_treshold = 16384
+
+axis2+ = l
+axis5+ = c-right
+
+axis3+ = c-right
+axis3- = c-left
+
+axis4+ = c-down
+axis4- = c-up
+
+# Now let's make the analog stick.
+# axisX+a and axisX-a mean what happens when you use it.
+# axisX+m and axisX-m mean how far it moves.
+# You can add a and m to buttons and hats too if you want them to move.
+axis0+ = stick
+axis0+a = movex
+axis0+m = 30
+axis0- = stick
+axis0-a = movex
+axis0-m = -30
+axis1+ = stick
+axis1+a = movey
+axis1+m = 30
+axis1- = stick
+axis1-a = movey
+axis1-m = -30
