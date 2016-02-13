@@ -94,7 +94,7 @@ bool Controller::open_joystick(int first_try)
     this->n_buttons = SDL_JoystickNumButtons(this->joystick);
     this->n_hats = SDL_JoystickNumHats(this->joystick);
     this->n_axes = SDL_JoystickNumAxes(this->joystick);
-   return true;
+    return true;
   } else {
     cerr << "Could not open any joystick. Restart the program or press r"
       " to try again." << endl;
