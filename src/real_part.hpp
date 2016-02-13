@@ -1,4 +1,9 @@
 /*
+  This file has classes that represent the physical parts of the
+  controller.  Each class has methods that return their current state,
+  possibly pretending that they are something else.  This makes it
+  possible to have an axis that acts like a button.
+
   Copyright (C) 2014  Robert Alm Nilsson <rorialni@gmail.com>
 
   This program is free software: you can redistribute it and/or modify

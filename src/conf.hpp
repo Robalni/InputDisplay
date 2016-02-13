@@ -1,4 +1,8 @@
 /*
+  In this file you find the Conf class that handles everything about
+  configuration files, except parsing the lines.  That is done by
+  Conf_line from conf_line.hpp and conf_line.cpp.
+
   Copyright (C) 2014  Robert Alm Nilsson <rorialni@gmail.com>
 
   This program is free software: you can redistribute it and/or modify

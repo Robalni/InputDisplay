@@ -1,4 +1,8 @@
 /*
+  A "controller" in this file means the controller you can see on your
+  screen in this program and it's connection to the physical
+  controller.
+
   Copyright (C) 2014, 2015  Robert Alm Nilsson <rorialni@gmail.com>
 
   This program is free software: you can redistribute it and/or modify

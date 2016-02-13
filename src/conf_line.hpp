@@ -1,4 +1,8 @@
 /*
+  A Conf_line is a line in the configuration file and this class is
+  used to parse those lines to make life easier for the Conf class
+  from conf.hpp and conf.cpp.
+
   Copyright (C) 2015  Robert Alm Nilsson <rorialni@gmail.com>
 
   This program is free software: you can redistribute it and/or modify

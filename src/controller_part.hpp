@@ -1,4 +1,8 @@
 /*
+  A "controller part" is a non-static part of the controller you can
+  see when you run this program.  It uses the classes from
+  real_part.hpp and real_part.cpp to access the physical controller.
+
   Copyright (C) 2014  Robert Alm Nilsson <rorialni@gmail.com>
 
   This program is free software: you can redistribute it and/or modify
