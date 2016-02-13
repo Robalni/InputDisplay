@@ -3,7 +3,7 @@
   screen in this program and it's connection to the physical
   controller.
 
-  Copyright (C) 2014, 2015  Robert Alm Nilsson <rorialni@gmail.com>
+  Copyright (C) 2014, 2015, 2016  Robert Alm Nilsson <rorialni@gmail.com>
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -47,11 +47,13 @@ public:
   void render();
   int get_width();
   int get_height();
-  bool open_another_joystick();
+  bool open_another_joystick(Conf &conf);
   char const *get_joystick_name() const;
 private:
   bool open_joystick(int first_try = 0);
   int action_str_to_int(string const &str);
+  bool load_parts(Conf &conf);
+  void free_parts();
   bool load_buttons(Conf &conf);
   bool load_axes(Conf &conf);
   bool load_hats(Conf &conf);

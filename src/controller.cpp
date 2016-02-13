@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2014, 2015  Robert Alm Nilsson <rorialni@gmail.com>
+  Copyright (C) 2014, 2015, 2016  Robert Alm Nilsson <rorialni@gmail.com>
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -23,9 +23,7 @@ Controller::Controller(SDL_Renderer *renderer, Conf &conf)
   this->renderer = renderer;
   this->joystick = NULL;
   this->open_joystick();
-  this->n_buttons = SDL_JoystickNumButtons(this->joystick);
-  this->n_hats = SDL_JoystickNumHats(this->joystick);
-  this->n_axes = SDL_JoystickNumAxes(this->joystick);
+  this->load_parts(conf);
 
   SDL_Surface *surf;
   surf = load_image("controller");
@@ -33,23 +31,32 @@ Controller::Controller(SDL_Renderer *renderer, Conf &conf)
   this->height = surf->h;
   this->texture = SDL_CreateTextureFromSurface(renderer, surf);
   SDL_FreeSurface(surf);
-  this->load_buttons(conf);
-  this->load_axes(conf);
-  this->load_hats(conf);
 }
 
 Controller::~Controller()
 {
   SDL_DestroyTexture(this->texture);
+  this->free_parts();
+  if (SDL_JoystickGetAttached(this->joystick)) {
+    SDL_JoystickClose(this->joystick);
+  }
+}
 
+bool Controller::load_parts(Conf &conf)
+{
+  this->load_buttons(conf);
+  this->load_axes(conf);
+  this->load_hats(conf);
+  return true;
+}
+
+void Controller::free_parts()
+{
   map<string, Controller_part*>::iterator i;
   for (i = this->parts.begin(); i != this->parts.end(); i++) {
     delete i->second;
   }
-
-  if (SDL_JoystickGetAttached(this->joystick)) {
-    SDL_JoystickClose(this->joystick);
-  }
+  this->parts.clear();
 }
 
 bool Controller::open_joystick(int first_try)
@@ -84,7 +91,10 @@ bool Controller::open_joystick(int first_try)
          << (joy_name ? joy_name : "")
          <<  ")\nYou can open another one with the tab key." << endl;
     this->joystick_index = joy_index;
-    return true;
+    this->n_buttons = SDL_JoystickNumButtons(this->joystick);
+    this->n_hats = SDL_JoystickNumHats(this->joystick);
+    this->n_axes = SDL_JoystickNumAxes(this->joystick);
+   return true;
   } else {
     cerr << "Could not open any joystick. Restart the program or press r"
       " to try again." << endl;
@@ -92,12 +102,15 @@ bool Controller::open_joystick(int first_try)
   }
 }
 
-bool Controller::open_another_joystick()
+bool Controller::open_another_joystick(Conf &conf)
 {
+  free_parts();
   if (SDL_JoystickGetAttached(this->joystick)) {
-    return this->open_joystick((joystick_index + 1) % SDL_NumJoysticks());
+    return this->open_joystick((joystick_index + 1) % SDL_NumJoysticks())
+      && load_parts(conf);
   } else {
-    return this->open_joystick(0);
+    return this->open_joystick(0)
+      && load_parts(conf);
   }
 }
 
@@ -130,13 +143,13 @@ bool Controller::load_buttons(Conf &conf)
     action = action_str_to_int(conf.get_value(ss.str()+'a'));
     conf.get_int(ss.str()+'m', max);
     if (name != "") {
-      surf = this->load_image(name.c_str());
       if (this->parts.count(name) == 0) {
+        surf = this->load_image(name.c_str());
         this->parts[name] = new Controller_part(this->renderer, surf,
                                                 this->joystick);
+        SDL_FreeSurface(surf);
       }
       this->parts[name]->add_button(i, action, max);
-      SDL_FreeSurface(surf);
     }
   }
   return true;
@@ -160,13 +173,13 @@ bool Controller::load_axes(Conf &conf)
       if (!conf.get_int(ss.str()+'t', treshold))
         treshold = deftreshold;
       if (name != "") {
-        surf = this->load_image(name.c_str());
         if (this->parts.count(name) == 0) {
+          surf = this->load_image(name.c_str());
           this->parts[name] = new Controller_part(this->renderer, surf,
                                                   this->joystick);
+          SDL_FreeSurface(surf);
         }
         this->parts[name]->add_axis(i, sign, action, max, treshold);
-        SDL_FreeSurface(surf);
       }
     }
     if (sign == '-') {
@@ -195,13 +208,13 @@ bool Controller::load_hats(Conf &conf)
       action = action_str_to_int(conf.get_value(ss.str()+'a'));
       conf.get_int(ss.str()+'m', max);
       if (name != "") {
-        surf = this->load_image(name.c_str());
         if (this->parts.count(name) == 0) {
+          surf = this->load_image(name.c_str());
           this->parts[name] = new Controller_part(this->renderer, surf,
                                                   this->joystick);
+          SDL_FreeSurface(surf);
         }
         this->parts[name]->add_hat(i, *direction, action, max);
-        SDL_FreeSurface(surf);
       }
     }
   }

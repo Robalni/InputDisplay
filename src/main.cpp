@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
           set_window_size_from_conf(conf, controller, window, renderer);
           break;
         case SDLK_TAB:
-          controller->open_another_joystick();
+          controller->open_another_joystick(conf);
           set_window_title(window, controller);
           break;
         }
