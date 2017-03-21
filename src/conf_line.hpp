@@ -1,5 +1,5 @@
 /*
-  A Conf_line is a line in the configuration file and this class is
+  A ConfLine is a line in the configuration file and this class is
   used to parse those lines to make life easier for the Conf class
   from conf.hpp and conf.cpp.
 
@@ -28,10 +28,10 @@ enum Line_type {
   UNKNOWN, IGNORE, VARIABLE, COMMAND
 };
 
-class Conf_line
+class ConfLine
 {
 public:
-  Conf_line(std::string const &line);
+  ConfLine(std::string const &line);
 
   // If type is VARIABLE, key and value are the variable name and the
   // value of that variable.

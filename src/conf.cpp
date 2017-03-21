@@ -39,7 +39,7 @@ bool Conf::readfile(string const &filename)
   using namespace std;
   string line;
   ifstream file;
-  Conf_line *cline;
+  ConfLine *cline;
   size_t line_number = 1;
 
   file.open(filename.c_str());
@@ -49,7 +49,7 @@ bool Conf::readfile(string const &filename)
   }
 
   while (getline(file, line)) {
-    cline = new Conf_line(line);
+    cline = new ConfLine(line);
 
     switch (cline->type) {
     case VARIABLE:

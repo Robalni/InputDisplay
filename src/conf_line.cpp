@@ -20,7 +20,7 @@
 #include <string>
 #include <vector>
 
-Conf_line::Conf_line(std::string const &line)
+ConfLine::ConfLine(std::string const &line)
 {
   size_t eq_sign = line.find('=');
   size_t first_non_blank = line.find_first_not_of(" \t\r");
@@ -43,7 +43,7 @@ Conf_line::Conf_line(std::string const &line)
   }
 }
 
-std::vector<std::string> Conf_line::split(std::string const &str)
+std::vector<std::string> ConfLine::split(std::string const &str)
 {
   std::vector<std::string> vec;
   size_t first = 0;
@@ -57,7 +57,7 @@ std::vector<std::string> Conf_line::split(std::string const &str)
   return vec;
 }
 
-bool Conf_line::find_next_word(std::string const &str,
+bool ConfLine::find_next_word(std::string const &str,
                                size_t &first, size_t &length)
 {
   first = str.find_first_not_of(" \t\r", first);
@@ -72,7 +72,7 @@ bool Conf_line::find_next_word(std::string const &str,
   return true;
 }
 
-std::string Conf_line::trim(std::string const &str)
+std::string ConfLine::trim(std::string const &str)
 {
   size_t first = str.find_first_not_of(" \t\r");
   size_t last = str.find_last_not_of(" \t\r");

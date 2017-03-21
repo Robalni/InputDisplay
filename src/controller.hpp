@@ -59,7 +59,7 @@ private:
   bool load_hats(Conf &conf);
   SDL_Surface *load_image(string const &name);
   SDL_Renderer *renderer;
-  map <string, Controller_part*> parts;
+  map <string, ControllerPart*> parts;
   SDL_Texture *texture;
   string imgdir;
   int width, height;

@@ -52,7 +52,7 @@ bool Controller::load_parts(Conf &conf)
 
 void Controller::free_parts()
 {
-  map<string, Controller_part*>::iterator i;
+  map<string, ControllerPart*>::iterator i;
   for (i = this->parts.begin(); i != this->parts.end(); i++) {
     delete i->second;
   }
@@ -145,7 +145,7 @@ bool Controller::load_buttons(Conf &conf)
     if (name != "") {
       if (this->parts.count(name) == 0) {
         surf = this->load_image(name.c_str());
-        this->parts[name] = new Controller_part(this->renderer, surf,
+        this->parts[name] = new ControllerPart(this->renderer, surf,
                                                 this->joystick);
         SDL_FreeSurface(surf);
       }
@@ -175,7 +175,7 @@ bool Controller::load_axes(Conf &conf)
       if (name != "") {
         if (this->parts.count(name) == 0) {
           surf = this->load_image(name.c_str());
-          this->parts[name] = new Controller_part(this->renderer, surf,
+          this->parts[name] = new ControllerPart(this->renderer, surf,
                                                   this->joystick);
           SDL_FreeSurface(surf);
         }
@@ -210,7 +210,7 @@ bool Controller::load_hats(Conf &conf)
       if (name != "") {
         if (this->parts.count(name) == 0) {
           surf = this->load_image(name.c_str());
-          this->parts[name] = new Controller_part(this->renderer, surf,
+          this->parts[name] = new ControllerPart(this->renderer, surf,
                                                   this->joystick);
           SDL_FreeSurface(surf);
         }
@@ -235,7 +235,7 @@ SDL_Surface *Controller::load_image(string const &name)
 
 void Controller::render()
 {
-  map<string, Controller_part*>::iterator i;
+  map<string, ControllerPart*>::iterator i;
 
   SDL_RenderCopy(this->renderer, this->texture, NULL, NULL);
 

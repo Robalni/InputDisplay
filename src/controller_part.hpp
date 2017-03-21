@@ -28,12 +28,12 @@
 
 using std::vector;
 
-class Controller_part
+class ControllerPart
 {
 public:
-  Controller_part(SDL_Renderer *renderer, SDL_Surface *surface,
+  ControllerPart(SDL_Renderer *renderer, SDL_Surface *surface,
                   SDL_Joystick *joystick);
-  ~Controller_part();
+  ~ControllerPart();
   void add_button(int index, int action, int max);
   void add_axis(int index, char sign, int action, int max, int treshold);
   void add_hat(int index, int direction, int action, int max);

@@ -17,7 +17,7 @@
 
 #include "controller_part.hpp"
 
-Controller_part::Controller_part(SDL_Renderer *renderer,
+ControllerPart::ControllerPart(SDL_Renderer *renderer,
                                  SDL_Surface *surface,
                                  SDL_Joystick *joystick)
 {
@@ -31,7 +31,7 @@ Controller_part::Controller_part(SDL_Renderer *renderer,
   this->show = true;
 }
 
-Controller_part::~Controller_part()
+ControllerPart::~ControllerPart()
 {
   SDL_DestroyTexture(this->texture);
   size_t i;
@@ -40,26 +40,26 @@ Controller_part::~Controller_part()
   }
 }
 
-void Controller_part::add_button(int index, int action, int max)
+void ControllerPart::add_button(int index, int action, int max)
 {
   Button *button = new Button(this->joystick, index, action, max);
   this->real_parts.push_back(button);
 }
 
-void Controller_part::add_axis(int index, char sign, int action, int max,
+void ControllerPart::add_axis(int index, char sign, int action, int max,
                                int treshold)
 {
   Axis *axis = new Axis(this->joystick, index, sign, action, max, treshold);
   this->real_parts.push_back(axis);
 }
 
-void Controller_part::add_hat(int index, int direction, int action, int max)
+void ControllerPart::add_hat(int index, int direction, int action, int max)
 {
   Hat *hat = new Hat(this->joystick, index, direction, action, max);
   this->real_parts.push_back(hat);
 }
 
-void Controller_part::render()
+void ControllerPart::render()
 {
   this->update();
   if (this->show) {
@@ -67,7 +67,7 @@ void Controller_part::render()
   }
 }
 
-void Controller_part::update()
+void ControllerPart::update()
 {
   size_t i;
   Real_part *part;
